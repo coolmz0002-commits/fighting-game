@@ -1,772 +1,920 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 
-<!-- Fixed viewport meta tag -->
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
 
 <title>CRIMSON ARENA</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link
-  href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;600&display=swap"
-  rel="stylesheet"
->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 
+/* =========================================================
+   ROOT
+========================================================= */
+
 :root {
-  --bg: #0b0705;
-  --blood: #c8102e;
-  --blood-bright: #ff2438;
-  --gold: #e8a33d;
-  --gold-dim: #8a6423;
-  --p1: #28d4ff;
-  --p2: #ff7a29;
-  --panel: #150c09;
+    --bg: #0b0705;
+    --blood: #c8102e;
+    --blood-bright: #ff2438;
+    --gold: #e8a33d;
+    --gold-dim: #8a6423;
+    --p1: #28d4ff;
+    --p2: #ff7a29;
 }
 
+
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
+    margin: 0;
 
-  background: var(--bg);
+    overflow: hidden;
 
-  overflow: hidden;
+    background: var(--bg);
 
-  font-family: 'Oswald', sans-serif;
+    color: #f2e9dd;
 
-  color: #f2e9dd;
+    font-family: 'Oswald', sans-serif;
 
-  /*
-   * Important for mobile gaming.
-   */
-  touch-action: none;
+    touch-action: none;
 
-  -webkit-user-select: none;
-  user-select: none;
-
-  -webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }
 
-/* =========================================
-   MAIN STAGE
-========================================= */
+
+/* =========================================================
+   STAGE
+========================================================= */
 
 #stage {
-  position: relative;
+    position: relative;
 
-  width: 100vw;
-  height: 100vh;
+    width: 100vw;
+    height: 100vh;
 
-  overflow: hidden;
+    overflow: hidden;
 }
 
-canvas#three-canvas {
-  position: absolute;
 
-  inset: 0;
+/* =========================================================
+   CANVAS
+========================================================= */
 
-  display: block;
+#three-canvas {
+    position: absolute;
 
-  width: 100%;
-  height: 100%;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
 }
 
-/* =========================================
+
+/* =========================================================
    VIGNETTE
-========================================= */
+========================================================= */
 
 .vignette {
-  position: absolute;
+    position: absolute;
 
-  inset: 0;
+    inset: 0;
 
-  pointer-events: none;
+    pointer-events: none;
 
-  background:
-    radial-gradient(
-      ellipse at center,
-      transparent 45%,
-      rgba(0, 0, 0, 0.75) 100%
-    );
+    z-index: 3;
 
-  z-index: 3;
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 45%,
+            rgba(0,0,0,.75) 100%
+        );
 }
 
-/* =========================================
+
+/* =========================================================
    TITLE
-========================================= */
+========================================================= */
 
 #title {
-  position: absolute;
+    position: absolute;
 
-  top: 14px;
-  left: 50%;
+    top: 14px;
+    left: 50%;
 
-  transform: translateX(-50%);
+    transform: translateX(-50%);
 
-  font-family: 'Bebas Neue', sans-serif;
+    z-index: 5;
 
-  font-size: 34px;
+    font-family: 'Bebas Neue', sans-serif;
 
-  letter-spacing: 10px;
+    font-size: 34px;
 
-  color: var(--gold);
+    letter-spacing: 10px;
 
-  text-shadow:
-    0 0 18px rgba(232,163,61,0.5),
-    0 2px 0 #000;
+    color: var(--gold);
 
-  z-index: 4;
+    text-shadow:
+        0 0 18px rgba(232,163,61,.5),
+        0 2px 0 #000;
 
-  pointer-events: none;
+    white-space: nowrap;
 
-  white-space: nowrap;
+    pointer-events: none;
 }
 
-/* =========================================
+
+/* =========================================================
    HUD
-========================================= */
+========================================================= */
 
 #hud {
-  position: absolute;
+    position: absolute;
 
-  top: 56px;
-  left: 0;
-  right: 0;
+    top: 56px;
+    left: 0;
+    right: 0;
 
-  display: flex;
+    z-index: 5;
 
-  justify-content: space-between;
+    display: flex;
 
-  align-items: flex-start;
+    align-items: flex-start;
+    justify-content: space-between;
 
-  padding: 0 30px;
+    padding: 0 30px;
 
-  z-index: 4;
-
-  pointer-events: none;
+    pointer-events: none;
 }
 
 .panel {
-  width: 38%;
+    width: 38%;
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(21,12,9,0.85),
-      rgba(21,12,9,0.55)
-    );
+    padding: 8px 12px;
 
-  border: 1px solid var(--gold-dim);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(21,12,9,.9),
+            rgba(21,12,9,.55)
+        );
 
-  padding: 8px 12px;
-
-  position: relative;
+    border: 1px solid var(--gold-dim);
 }
 
 .panel.right {
-  text-align: right;
+    text-align: right;
 }
 
 .fighterName {
-  font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bebas Neue', sans-serif;
 
-  font-size: 20px;
+    font-size: 20px;
 
-  letter-spacing: 3px;
-
-  color: #f2e9dd;
+    letter-spacing: 3px;
 }
 
 .fighterName.p1 {
-  color: var(--p1);
+    color: var(--p1);
 
-  text-shadow:
-    0 0 10px rgba(40,212,255,0.6);
+    text-shadow:
+        0 0 10px rgba(40,212,255,.6);
 }
 
 .fighterName.p2 {
-  color: var(--p2);
+    color: var(--p2);
 
-  text-shadow:
-    0 0 10px rgba(255,122,41,0.6);
+    text-shadow:
+        0 0 10px rgba(255,122,41,.6);
 }
 
+
+/* =========================================================
+   HEALTH
+========================================================= */
+
 .healthOuter {
-  margin-top: 6px;
+    width: 100%;
+    height: 16px;
 
-  width: 100%;
-  height: 16px;
+    margin-top: 6px;
 
-  background: #1c0e0e;
+    overflow: hidden;
 
-  border: 1px solid #000;
+    background: #1c0e0e;
 
-  box-shadow:
-    inset 0 0 6px rgba(0,0,0,0.8);
-
-  position: relative;
-
-  overflow: hidden;
+    border: 1px solid #000;
 }
 
 .healthInner {
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  width: 100%;
+    background:
+        linear-gradient(
+            180deg,
+            #ffe37a,
+            var(--gold) 40%,
+            #b5761a
+        );
 
-  background:
-    linear-gradient(
-      180deg,
-      #ffe37a,
-      var(--gold) 40%,
-      #b5761a
-    );
-
-  transition: width 0.18s ease;
+    transition: width .18s ease;
 }
 
 .healthInner.low {
-  background:
-    linear-gradient(
-      180deg,
-      #ff6a5e,
-      var(--blood-bright) 40%,
-      #7a0f1a
-    );
+    background:
+        linear-gradient(
+            180deg,
+            #ff6a5e,
+            var(--blood-bright) 40%,
+            #7a0f1a
+        );
 }
 
-/* =========================================
+
+/* =========================================================
    TIMER
-========================================= */
+========================================================= */
 
 #timerWrap {
-  font-family: 'Bebas Neue', sans-serif;
+    padding-top: 4px;
 
-  font-size: 44px;
+    font-family: 'Bebas Neue', sans-serif;
 
-  color: var(--gold);
+    font-size: 44px;
 
-  text-shadow:
-    0 0 14px rgba(232,163,61,0.6),
-    0 2px 0 #000;
+    line-height: 1;
 
-  line-height: 1;
+    color: var(--gold);
 
-  padding-top: 4px;
+    text-shadow:
+        0 0 14px rgba(232,163,61,.6),
+        0 2px 0 #000;
 }
 
-/* =========================================
+
+/* =========================================================
    BANNER
-========================================= */
+========================================================= */
 
 #banner {
-  position: absolute;
+    position: absolute;
 
-  top: 42%;
-  left: 50%;
+    top: 42%;
+    left: 50%;
 
-  transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 
-  font-family: 'Bebas Neue', sans-serif;
+    z-index: 20;
 
-  font-size: 64px;
+    display: none;
 
-  letter-spacing: 6px;
+    font-family: 'Bebas Neue', sans-serif;
 
-  color: var(--blood-bright);
+    font-size: 64px;
 
-  text-shadow:
-    0 0 30px rgba(200,16,46,0.8),
-    0 3px 0 #000;
+    letter-spacing: 6px;
 
-  z-index: 20;
+    color: var(--blood-bright);
 
-  display: none;
+    text-shadow:
+        0 0 30px rgba(200,16,46,.8),
+        0 3px 0 #000;
 
-  text-align: center;
+    white-space: nowrap;
 
-  pointer-events: none;
-
-  white-space: nowrap;
+    pointer-events: none;
 }
 
-/* =========================================
-   REMATCH BUTTON
-========================================= */
+
+/* =========================================================
+   REMATCH
+========================================================= */
 
 #restartBtn {
-  position: absolute;
+    position: absolute;
 
-  top: 58%;
-  left: 50%;
+    top: 58%;
+    left: 50%;
 
-  transform: translateX(-50%);
+    transform: translateX(-50%);
 
-  font-family: 'Bebas Neue', sans-serif;
+    z-index: 30;
 
-  font-size: 20px;
+    display: none;
 
-  letter-spacing: 3px;
+    min-width: 150px;
+    min-height: 52px;
 
-  background:
-    linear-gradient(
-      180deg,
-      #3a1414,
-      #1a0808
-    );
+    padding: 14px 30px;
 
-  color: var(--gold);
+    border: 1px solid var(--gold-dim);
 
-  border: 1px solid var(--gold-dim);
+    background:
+        linear-gradient(
+            180deg,
+            #3a1414,
+            #1a0808
+        );
 
-  padding: 14px 30px;
+    color: var(--gold);
 
-  min-width: 150px;
-  min-height: 52px;
+    font-family: 'Bebas Neue', sans-serif;
 
-  cursor: pointer;
+    font-size: 20px;
 
-  display: none;
+    letter-spacing: 3px;
 
-  z-index: 30;
+    cursor: pointer;
 
-  touch-action: manipulation;
+    touch-action: manipulation;
 
-  -webkit-tap-highlight-color: transparent;
-
-  transition:
-    transform 0.12s ease,
-    background 0.12s ease;
-}
-
-#restartBtn:hover {
-  background: #4a1a1a;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #restartBtn:active {
-  transform:
-    translateX(-50%)
-    scale(0.92);
+    transform:
+        translateX(-50%)
+        scale(.92);
 }
 
-/* =========================================
+
+/* =========================================================
    DESKTOP CONTROLS
-========================================= */
+========================================================= */
 
 #controls {
-  position: absolute;
+    position: absolute;
 
-  bottom: 10px;
-  left: 50%;
+    left: 50%;
+    bottom: 10px;
 
-  transform: translateX(-50%);
+    transform: translateX(-50%);
 
-  font-size: 12px;
+    z-index: 5;
 
-  letter-spacing: 1px;
+    color: rgba(242,233,221,.55);
 
-  color: rgba(242,233,221,0.55);
+    font-size: 12px;
 
-  z-index: 4;
+    letter-spacing: 1px;
 
-  text-align: center;
+    white-space: nowrap;
 
-  pointer-events: none;
+    pointer-events: none;
 
-  white-space: nowrap;
+    text-align: center;
 }
 
 #controls b {
-  color: var(--gold);
+    color: var(--gold);
 }
 
-/* =========================================
-   TOUCH CONTROLS
-========================================= */
+
+/* =========================================================
+   MOBILE TOUCH SYSTEM
+========================================================= */
 
 #touchControls {
-  position: absolute;
+    position: absolute;
 
-  inset: 0;
+    inset: 0;
 
-  z-index: 15;
+    z-index: 15;
 
-  pointer-events: none;
+    display: none;
 
-  display: none;
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    pointer-events: none;
 }
 
-/* =========================================
-   PLAYER TOUCH PAD
-========================================= */
+
+/* =========================================================
+   TOUCH PAD
+========================================================= */
 
 .touchPad {
-  position: absolute;
+    position: absolute;
 
-  bottom: 18px;
+    bottom:
+        max(
+            12px,
+            env(safe-area-inset-bottom)
+        );
 
-  display: grid;
+    width: 145px;
 
-  gap: 7px;
+    display: flex;
 
-  pointer-events: auto;
+    flex-direction: column;
 
-  user-select: none;
+    gap: 6px;
 
-  -webkit-user-select: none;
+    pointer-events: auto;
 
-  touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+
+    touch-action: none;
 }
+
+
+/* Player 1 */
 
 #p1Touch {
-  left: 15px;
+    left:
+        max(
+            8px,
+            env(safe-area-inset-left)
+        );
 }
+
+
+/* Player 2 */
 
 #p2Touch {
-  right: 15px;
+    right:
+        max(
+            8px,
+            env(safe-area-inset-right)
+        );
 }
 
-/* =========================================
-   PLAYER LABEL
-========================================= */
+
+/* =========================================================
+   TOUCH LABEL
+========================================================= */
 
 .touchLabel {
-  text-align: center;
+    width: 100%;
 
-  font-family: 'Bebas Neue', sans-serif;
+    text-align: center;
 
-  font-size: 13px;
+    font-family: 'Bebas Neue', sans-serif;
 
-  letter-spacing: 2px;
-
-  color: var(--gold);
-
-  margin-bottom: 2px;
-
-  text-shadow:
-    0 2px 4px #000;
-}
-
-/* =========================================
-   TOUCH ROW
-========================================= */
-
-.touchRow {
-  display: flex;
-
-  gap: 7px;
-
-  justify-content: center;
-}
-
-/* =========================================
-   TOUCH BUTTON
-========================================= */
-
-.touchBtn {
-  width: 58px;
-  height: 58px;
-
-  min-width: 58px;
-  min-height: 58px;
-
-  border: 1px solid rgba(232,163,61,0.7);
-
-  border-radius: 14px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(55,22,18,0.96),
-      rgba(20,8,8,0.96)
-    );
-
-  color: #f2e9dd;
-
-  font-family: 'Bebas Neue', sans-serif;
-
-  font-size: 17px;
-
-  font-weight: bold;
-
-  box-shadow:
-    0 5px 15px rgba(0,0,0,0.45),
-    inset 0 0 12px rgba(200,16,46,0.12);
-
-  cursor: pointer;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding: 0;
-
-  outline: none;
-
-  -webkit-tap-highlight-color: transparent;
-
-  touch-action: none;
-
-  transition:
-    transform 0.08s ease,
-    background 0.08s ease,
-    box-shadow 0.08s ease;
-}
-
-.touchBtn:hover {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(75,28,22,0.98),
-      rgba(30,10,10,0.98)
-    );
-}
-
-.touchBtn:active,
-.touchBtn.pressed {
-  transform: scale(0.88);
-
-  background:
-    linear-gradient(
-      180deg,
-      #7d2028,
-      #351015
-    );
-
-  box-shadow:
-    0 2px 5px rgba(0,0,0,0.5),
-    inset 0 0 18px rgba(255,80,60,0.3);
-}
-
-/* =========================================
-   ATTACK BUTTONS
-========================================= */
-
-.touchBtn.attack {
-  border-color: rgba(255,36,56,0.9);
-
-  color: #ff7d86;
-
-  box-shadow:
-    0 5px 15px rgba(0,0,0,0.45),
-    inset 0 0 15px rgba(255,36,56,0.12);
-}
-
-/* =========================================
-   BLOCK BUTTON
-========================================= */
-
-.touchBtn.block {
-  border-color: rgba(40,212,255,0.8);
-
-  color: #65ddff;
-}
-
-/* =========================================
-   TOUCH RIPPLE
-========================================= */
-
-.touchBtn::after {
-  content: "";
-
-  position: absolute;
-
-  width: 0;
-  height: 0;
-
-  border-radius: 50%;
-
-  background: rgba(255,255,255,0.25);
-
-  transform: translate(-50%, -50%);
-
-  pointer-events: none;
-}
-
-/* =========================================
-   MOBILE DISPLAY
-========================================= */
-
-@media (pointer: coarse) {
-
-  #touchControls {
-    display: block;
-  }
-
-  #controls {
-    display: none;
-  }
-
-}
-
-/* =========================================
-   MOBILE SCREEN
-========================================= */
-
-@media (max-width: 700px) {
-
-  #title {
-    top: 10px;
-
-    font-size: 26px;
-
-    letter-spacing: 6px;
-  }
-
-  #hud {
-    top: 45px;
-
-    padding: 0 10px;
-  }
-
-  .panel {
-    width: 36%;
-
-    padding: 6px 7px;
-  }
-
-  .fighterName {
-    font-size: 15px;
+    font-size: 12px;
 
     letter-spacing: 2px;
-  }
 
-  .healthOuter {
-    height: 12px;
-  }
+    color: var(--gold);
 
-  #timerWrap {
-    font-size: 34px;
-  }
+    text-shadow:
+        0 2px 5px #000;
 
-  #banner {
-    font-size: 48px;
-
-    letter-spacing: 4px;
-  }
-
-  .touchPad {
-    bottom: 10px;
-  }
-
-  #p1Touch {
-    left: 7px;
-  }
-
-  #p2Touch {
-    right: 7px;
-  }
-
-  .touchBtn {
-    width: 50px;
-    height: 50px;
-
-    min-width: 50px;
-    min-height: 50px;
-
-    border-radius: 12px;
-
-    font-size: 14px;
-  }
-
-  .touchRow {
-    gap: 5px;
-  }
-
-  .touchPad {
-    gap: 5px;
-  }
-
+    pointer-events: none;
 }
 
-/* =========================================
-   VERY SMALL PHONES
-========================================= */
 
-@media (max-width: 400px) {
+/* =========================================================
+   TOUCH ROW
+========================================================= */
 
-  .touchBtn {
-    width: 43px;
-    height: 43px;
+.touchRow {
+    width: 100%;
 
-    min-width: 43px;
-    min-height: 43px;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+}
+
+
+/* =========================================================
+   NORMAL TOUCH BUTTON
+========================================================= */
+
+.touchBtn {
+    flex: 0 0 44px;
+
+    width: 44px;
+    height: 44px;
+
+    min-width: 44px;
+    min-height: 44px;
+
+    padding: 0;
+
+    border: 1px solid rgba(232,163,61,.8);
 
     border-radius: 10px;
 
-    font-size: 12px;
-  }
+    outline: none;
 
-  .touchRow {
-    gap: 4px;
-  }
+    background:
+        linear-gradient(
+            180deg,
+            rgba(55,22,18,.98),
+            rgba(20,8,8,.98)
+        );
 
-  .touchPad {
-    gap: 4px;
-  }
+    color: #f2e9dd;
 
-  .touchLabel {
-    font-size: 11px;
-  }
+    font-family: 'Bebas Neue', sans-serif;
 
+    font-size: 13px;
+
+    font-weight: bold;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    touch-action: none;
+
+    -webkit-tap-highlight-color: transparent;
+
+    box-shadow:
+        0 4px 8px rgba(0,0,0,.5),
+        inset 0 0 10px rgba(200,16,46,.15);
+
+    transition:
+        transform .08s ease,
+        background .08s ease;
 }
 
-/* =========================================
-   LANDSCAPE MOBILE
-========================================= */
 
-@media (max-height: 500px) {
+/* =========================================================
+   LEFT / RIGHT
+========================================================= */
 
-  .touchPad {
-    bottom: 6px;
-  }
+.touchBtn[data-key="KeyA"],
+.touchBtn[data-key="KeyD"],
+.touchBtn[data-key="ArrowLeft"],
+.touchBtn[data-key="ArrowRight"] {
+    font-size: 18px;
+}
 
-  .touchBtn {
-    width: 42px;
-    height: 42px;
 
-    min-width: 42px;
-    min-height: 42px;
+/* =========================================================
+   JUMP
+========================================================= */
+
+.touchBtn[data-key="KeyW"],
+.touchBtn[data-key="ArrowUp"] {
+    margin: 0 auto;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   BLOCK
+========================================================= */
+
+.touchBtn.block {
+    flex: 0 0 58px;
+
+    width: 58px;
+
+    border-color:
+        rgba(40,212,255,.8);
+
+    color: #65ddff;
 
     font-size: 11px;
-  }
+}
 
-  .touchRow {
-    gap: 4px;
-  }
 
-  .touchPad {
-    gap: 4px;
-  }
+/* =========================================================
+   ATTACK BUTTONS
+========================================================= */
 
-  #title {
-    font-size: 22px;
-  }
+.touchBtn.attack {
+    flex: 0 0 68px;
 
-  #hud {
-    top: 38px;
-  }
+    width: 68px;
 
-  #timerWrap {
-    font-size: 30px;
-  }
+    height: 46px;
 
+    min-width: 68px;
+    min-height: 46px;
+
+    border-color:
+        rgba(255,36,56,.95);
+
+    color: #ff7d86;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   BUTTON PRESS
+========================================================= */
+
+.touchBtn:active,
+.touchBtn.pressed {
+    transform: scale(.88);
+
+    background:
+        linear-gradient(
+            180deg,
+            #7d2028,
+            #351015
+        );
+
+    box-shadow:
+        0 2px 5px rgba(0,0,0,.6),
+        inset 0 0 15px rgba(255,80,60,.3);
+}
+
+.touchBtn.attack:active,
+.touchBtn.attack.pressed {
+    transform: scale(.90);
+
+    background:
+        linear-gradient(
+            180deg,
+            #a32632,
+            #430d14
+        );
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (min-width: 600px) and (max-width: 1100px) {
+
+    .touchPad {
+        width: 175px;
+
+        bottom:
+            max(
+                18px,
+                env(safe-area-inset-bottom)
+            );
+    }
+
+    .touchBtn {
+        flex-basis: 52px;
+
+        width: 52px;
+        height: 52px;
+
+        min-width: 52px;
+        min-height: 52px;
+    }
+
+    .touchBtn.block {
+        flex-basis: 68px;
+
+        width: 68px;
+    }
+
+    .touchBtn.attack {
+        flex-basis: 78px;
+
+        width: 78px;
+
+        height: 50px;
+
+        min-width: 78px;
+        min-height: 50px;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .touchPad {
+        width: 130px;
+
+        bottom:
+            max(
+                8px,
+                env(safe-area-inset-bottom)
+            );
+    }
+
+    .touchRow {
+        gap: 3px;
+    }
+
+    .touchBtn {
+        flex-basis: 39px;
+
+        width: 39px;
+        height: 39px;
+
+        min-width: 39px;
+        min-height: 39px;
+
+        border-radius: 9px;
+
+        font-size: 11px;
+    }
+
+    .touchBtn.block {
+        flex-basis: 50px;
+
+        width: 50px;
+
+        font-size: 9px;
+    }
+
+    .touchBtn.attack {
+        flex-basis: 61px;
+
+        width: 61px;
+
+        height: 40px;
+
+        min-width: 61px;
+        min-height: 40px;
+
+        font-size: 10px;
+    }
+
+    #title {
+        font-size: 25px;
+
+        letter-spacing: 5px;
+    }
+
+    #hud {
+        top: 45px;
+
+        padding: 0 8px;
+    }
+
+    .fighterName {
+        font-size: 14px;
+    }
+
+    .healthOuter {
+        height: 11px;
+    }
+
+    #timerWrap {
+        font-size: 32px;
+    }
+
+    #banner {
+        font-size: 42px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONE
+========================================================= */
+
+@media (max-width: 350px) {
+
+    .touchPad {
+        width: 116px;
+    }
+
+    .touchBtn {
+        flex-basis: 35px;
+
+        width: 35px;
+        height: 35px;
+
+        min-width: 35px;
+        min-height: 35px;
+
+        font-size: 10px;
+    }
+
+    .touchBtn.block {
+        flex-basis: 44px;
+
+        width: 44px;
+
+        font-size: 8px;
+    }
+
+    .touchBtn.attack {
+        flex-basis: 54px;
+
+        width: 54px;
+
+        height: 36px;
+
+        min-width: 54px;
+        min-height: 36px;
+
+        font-size: 9px;
+    }
+
+    .touchLabel {
+        font-size: 9px;
+    }
+}
+
+
+/* =========================================================
+   LANDSCAPE PHONE
+========================================================= */
+
+@media (orientation: landscape)
+       and (max-height: 550px) {
+
+    .touchPad {
+        bottom: 5px;
+
+        width: 125px;
+
+        gap: 3px;
+    }
+
+    .touchRow {
+        gap: 3px;
+    }
+
+    .touchBtn {
+        flex-basis: 36px;
+
+        width: 36px;
+        height: 36px;
+
+        min-width: 36px;
+        min-height: 36px;
+
+        border-radius: 8px;
+
+        font-size: 10px;
+    }
+
+    .touchBtn.block {
+        flex-basis: 47px;
+
+        width: 47px;
+
+        font-size: 8px;
+    }
+
+    .touchBtn.attack {
+        flex-basis: 57px;
+
+        width: 57px;
+
+        height: 34px;
+
+        min-width: 57px;
+        min-height: 34px;
+
+        font-size: 9px;
+    }
+
+    .touchLabel {
+        font-size: 9px;
+    }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (pointer: coarse) {
+
+    #touchControls {
+        display: block;
+    }
+
+    #controls {
+        display: none;
+    }
 }
 
 </style>
@@ -777,643 +925,647 @@ canvas#three-canvas {
 
 <div id="stage">
 
-  <canvas id="three-canvas"></canvas>
+    <canvas id="three-canvas"></canvas>
 
-  <div class="vignette"></div>
-
-  <div id="title">
-    CRIMSON ARENA
-  </div>
+    <div class="vignette"></div>
 
 
-  <!-- =====================================
-       HUD
-  ====================================== -->
+    <!-- =====================================================
+         TITLE
+    ====================================================== -->
 
-  <div id="hud">
+    <div id="title">
+        CRIMSON ARENA
+    </div>
 
-    <div class="panel">
 
-      <div class="fighterName p1">
-        RONIN
-      </div>
+    <!-- =====================================================
+         HUD
+    ====================================================== -->
 
-      <div class="healthOuter">
+    <div id="hud">
+
+        <div class="panel">
+
+            <div class="fighterName p1">
+                RONIN
+            </div>
+
+            <div class="healthOuter">
+
+                <div
+                    id="hp1"
+                    class="healthInner">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div id="timerWrap">
+            <span id="timer">60</span>
+        </div>
+
+
+        <div class="panel right">
+
+            <div class="fighterName p2">
+                VOLKAN
+            </div>
+
+            <div class="healthOuter">
+
+                <div
+                    id="hp2"
+                    class="healthInner">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BANNER
+    ====================================================== -->
+
+    <div id="banner"></div>
+
+
+    <!-- =====================================================
+         REMATCH
+    ====================================================== -->
+
+    <button id="restartBtn">
+        REMATCH
+    </button>
+
+
+    <!-- =====================================================
+         DESKTOP CONTROLS
+    ====================================================== -->
+
+    <div id="controls">
+
+        <b>P1</b>
+        — A/D move · W jump · S block · F punch · G kick
+
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+
+        <b>P2</b>
+        — ←/→ move · ↑ jump · ↓ block · K punch · L kick
+
+    </div>
+
+
+    <!-- =====================================================
+         MOBILE CONTROLS
+    ====================================================== -->
+
+    <div id="touchControls">
+
+
+        <!-- =================================================
+             PLAYER 1
+        ================================================== -->
 
         <div
-          id="hp1"
-          class="healthInner"
-        ></div>
+            class="touchPad"
+            id="p1Touch">
 
-      </div>
-
-    </div>
-
-
-    <div id="timerWrap">
-
-      <span id="timer">
-        60
-      </span>
-
-    </div>
+            <div class="touchLabel">
+                PLAYER 1
+            </div>
 
 
-    <div class="panel right">
+            <!-- JUMP -->
 
-      <div class="fighterName p2">
-        VOLKAN
-      </div>
+            <div class="touchRow">
 
-      <div class="healthOuter">
+                <button
+                    class="touchBtn"
+                    data-key="KeyW"
+                    aria-label="Player 1 Jump">
+
+                    ▲
+
+                </button>
+
+            </div>
+
+
+            <!-- MOVEMENT -->
+
+            <div class="touchRow">
+
+                <button
+                    class="touchBtn"
+                    data-key="KeyA"
+                    aria-label="Player 1 Move Left">
+
+                    ◀
+
+                </button>
+
+
+                <button
+                    class="touchBtn block"
+                    data-key="KeyS"
+                    aria-label="Player 1 Block">
+
+                    BLOCK
+
+                </button>
+
+
+                <button
+                    class="touchBtn"
+                    data-key="KeyD"
+                    aria-label="Player 1 Move Right">
+
+                    ▶
+
+                </button>
+
+            </div>
+
+
+            <!-- ATTACK -->
+
+            <div class="touchRow">
+
+                <button
+                    class="touchBtn attack"
+                    data-key="KeyF"
+                    aria-label="Player 1 Punch">
+
+                    PUNCH
+
+                </button>
+
+
+                <button
+                    class="touchBtn attack"
+                    data-key="KeyG"
+                    aria-label="Player 1 Kick">
+
+                    KICK
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PLAYER 2
+        ================================================== -->
 
         <div
-          id="hp2"
-          class="healthInner"
-        ></div>
+            class="touchPad"
+            id="p2Touch">
 
-      </div>
-
-    </div>
-
-  </div>
+            <div class="touchLabel">
+                PLAYER 2
+            </div>
 
 
-  <!-- =====================================
-       GAME BANNER
-  ====================================== -->
+            <!-- JUMP -->
 
-  <div id="banner"></div>
+            <div class="touchRow">
 
+                <button
+                    class="touchBtn"
+                    data-key="ArrowUp"
+                    aria-label="Player 2 Jump">
 
-  <!-- =====================================
-       REMATCH
-  ====================================== -->
+                    ▲
 
-  <button id="restartBtn">
-    REMATCH
-  </button>
+                </button>
 
-
-  <!-- =====================================
-       DESKTOP CONTROLS
-  ====================================== -->
-
-  <div id="controls">
-
-    <b>P1</b>
-    — A/D move · W jump · S block · F punch · G kick
-
-    &nbsp;&nbsp;|&nbsp;&nbsp;
-
-    <b>P2</b>
-    — ←/→ move · ↑ jump · ↓ block · K punch · L kick
-
-  </div>
+            </div>
 
 
-  <!-- =====================================
-       MOBILE TOUCH CONTROLS
-  ====================================== -->
+            <!-- MOVEMENT -->
 
-  <div id="touchControls">
+            <div class="touchRow">
 
+                <button
+                    class="touchBtn"
+                    data-key="ArrowLeft"
+                    aria-label="Player 2 Move Left">
 
-    <!-- ===================================
-         PLAYER 1
-    ==================================== -->
+                    ◀
 
-    <div
-      class="touchPad"
-      id="p1Touch"
-    >
-
-      <div class="touchLabel">
-        PLAYER 1
-      </div>
+                </button>
 
 
-      <!-- JUMP -->
+                <button
+                    class="touchBtn block"
+                    data-key="ArrowDown"
+                    aria-label="Player 2 Block">
 
-      <div class="touchRow">
+                    BLOCK
 
-        <button
-          class="touchBtn"
-          data-key="KeyW"
-          aria-label="Player 1 Jump"
-        >
-          ▲
-        </button>
-
-      </div>
+                </button>
 
 
-      <!-- MOVEMENT + BLOCK -->
+                <button
+                    class="touchBtn"
+                    data-key="ArrowRight"
+                    aria-label="Player 2 Move Right">
 
-      <div class="touchRow">
+                    ▶
 
-        <button
-          class="touchBtn"
-          data-key="KeyA"
-          aria-label="Player 1 Move Left"
-        >
-          ◀
-        </button>
+                </button>
 
-
-        <button
-          class="touchBtn block"
-          data-key="KeyS"
-          aria-label="Player 1 Block"
-        >
-          BLOCK
-        </button>
+            </div>
 
 
-        <button
-          class="touchBtn"
-          data-key="KeyD"
-          aria-label="Player 1 Move Right"
-        >
-          ▶
-        </button>
+            <!-- ATTACK -->
 
-      </div>
+            <div class="touchRow">
 
+                <button
+                    class="touchBtn attack"
+                    data-key="KeyK"
+                    aria-label="Player 2 Punch">
 
-      <!-- ATTACK -->
+                    PUNCH
 
-      <div class="touchRow">
-
-        <button
-          class="touchBtn attack"
-          data-key="KeyF"
-          aria-label="Player 1 Punch"
-        >
-          PUNCH
-        </button>
+                </button>
 
 
-        <button
-          class="touchBtn attack"
-          data-key="KeyG"
-          aria-label="Player 1 Kick"
-        >
-          KICK
-        </button>
+                <button
+                    class="touchBtn attack"
+                    data-key="KeyL"
+                    aria-label="Player 2 Kick">
 
-      </div>
+                    KICK
+
+                </button>
+
+            </div>
+
+        </div>
 
     </div>
-
-
-    <!-- ===================================
-         PLAYER 2
-    ==================================== -->
-
-    <div
-      class="touchPad"
-      id="p2Touch"
-    >
-
-      <div class="touchLabel">
-        PLAYER 2
-      </div>
-
-
-      <!-- JUMP -->
-
-      <div class="touchRow">
-
-        <button
-          class="touchBtn"
-          data-key="ArrowUp"
-          aria-label="Player 2 Jump"
-        >
-          ▲
-        </button>
-
-      </div>
-
-
-      <!-- MOVEMENT + BLOCK -->
-
-      <div class="touchRow">
-
-        <button
-          class="touchBtn"
-          data-key="ArrowLeft"
-          aria-label="Player 2 Move Left"
-        >
-          ◀
-        </button>
-
-
-        <button
-          class="touchBtn block"
-          data-key="ArrowDown"
-          aria-label="Player 2 Block"
-        >
-          BLOCK
-        </button>
-
-
-        <button
-          class="touchBtn"
-          data-key="ArrowRight"
-          aria-label="Player 2 Move Right"
-        >
-          ▶
-        </button>
-
-      </div>
-
-
-      <!-- ATTACK -->
-
-      <div class="touchRow">
-
-        <button
-          class="touchBtn attack"
-          data-key="KeyK"
-          aria-label="Player 2 Punch"
-        >
-          PUNCH
-        </button>
-
-
-        <button
-          class="touchBtn attack"
-          data-key="KeyL"
-          aria-label="Player 2 Kick"
-        >
-          KICK
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
 
 </div>
 
 
-<!-- =========================================
+<!-- =========================================================
      THREE.JS
-========================================= -->
+========================================================= -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 
 <script>
 
-/* =========================================
-   BASIC SETUP
-========================================= */
+/* =========================================================
+   THREE.JS SETUP
+========================================================= */
 
 const canvas =
-  document.getElementById('three-canvas');
+    document.getElementById(
+        "three-canvas"
+    );
 
 
 const renderer =
-  new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: false
-  });
+    new THREE.WebGLRenderer({
+
+        canvas: canvas,
+
+        antialias: true,
+
+        alpha: false
+
+    });
 
 
 renderer.setPixelRatio(
-  Math.min(window.devicePixelRatio, 2)
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
 );
 
 
 renderer.setSize(
-  window.innerWidth,
-  window.innerHeight
+    window.innerWidth,
+    window.innerHeight
 );
 
 
 const scene =
-  new THREE.Scene();
-
-
-scene.fog =
-  new THREE.FogExp2(
-    0x0b0705,
-    0.0026
-  );
+    new THREE.Scene();
 
 
 scene.background =
-  new THREE.Color(0x0b0705);
+    new THREE.Color(
+        0x0b0705
+    );
+
+
+scene.fog =
+    new THREE.FogExp2(
+        0x0b0705,
+        0.0026
+    );
 
 
 const camera =
-  new THREE.PerspectiveCamera(
-    42,
-    window.innerWidth /
-      window.innerHeight,
-    1,
-    3000
-  );
+    new THREE.PerspectiveCamera(
+        42,
+
+        window.innerWidth /
+        window.innerHeight,
+
+        1,
+
+        3000
+    );
 
 
-const camBase =
-  new THREE.Vector3(
+camera.position.set(
     0,
     130,
     430
-  );
-
-
-camera.position.copy(
-  camBase
 );
 
 
-camera.lookAt(
-  0,
-  70,
-  0
-);
-
-
-/* =========================================
+/* =========================================================
    RESIZE
-========================================= */
+========================================================= */
 
 window.addEventListener(
-  'resize',
-  () => {
+    "resize",
+    () => {
 
-    camera.aspect =
-      window.innerWidth /
-      window.innerHeight;
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
 
-    camera.updateProjectionMatrix();
+        camera.updateProjectionMatrix();
 
-    renderer.setSize(
-      window.innerWidth,
-      window.innerHeight
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+    }
+);
+
+
+/* =========================================================
+   LIGHTS
+========================================================= */
+
+scene.add(
+    new THREE.AmbientLight(
+        0x30201a,
+        1.1
+    )
+);
+
+
+const mainLight =
+    new THREE.SpotLight(
+        0xffd9a0,
+        1.6,
+        1200,
+        Math.PI / 4.2,
+        .5,
+        1.4
     );
 
-  }
+
+mainLight.position.set(
+    0,
+    500,
+    120
 );
 
 
-/* =========================================
-   LIGHTING
-========================================= */
-
-scene.add(
-  new THREE.AmbientLight(
-    0x30201a,
-    1.1
-  )
-);
-
-
-const spot =
-  new THREE.SpotLight(
-    0xffd9a0,
-    1.6,
-    1200,
-    Math.PI / 4.2,
-    0.5,
-    1.4
-  );
-
-
-spot.position.set(
-  0,
-  500,
-  120
-);
-
-
-spot.target.position.set(
-  0,
-  0,
-  0
+mainLight.target.position.set(
+    0,
+    0,
+    0
 );
 
 
 scene.add(
-  spot,
-  spot.target
+    mainLight,
+    mainLight.target
 );
 
 
-const rimP1 =
-  new THREE.PointLight(
-    0x28d4ff,
-    2.2,
-    500
-  );
+const p1Light =
+    new THREE.PointLight(
+        0x28d4ff,
+        2.2,
+        500
+    );
 
 
-rimP1.position.set(
-  -220,
-  90,
-  140
+p1Light.position.set(
+    -220,
+    90,
+    140
 );
 
 
-scene.add(rimP1);
-
-
-const rimP2 =
-  new THREE.PointLight(
-    0xff7a29,
-    2.2,
-    500
-  );
-
-
-rimP2.position.set(
-  220,
-  90,
-  140
+scene.add(
+    p1Light
 );
 
 
-scene.add(rimP2);
+const p2Light =
+    new THREE.PointLight(
+        0xff7a29,
+        2.2,
+        500
+    );
 
 
-/* =========================================
+p2Light.position.set(
+    220,
+    90,
+    140
+);
+
+
+scene.add(
+    p2Light
+);
+
+
+/* =========================================================
    TORCHES
-========================================= */
+========================================================= */
 
 function makeTorch(x, z) {
 
-  const pole =
-    new THREE.Mesh(
-      new THREE.CylinderGeometry(
-        3,
-        3,
-        90,
-        6
-      ),
+    const pole =
+        new THREE.Mesh(
 
-      new THREE.MeshStandardMaterial({
-        color: 0x2a1c10
-      })
+            new THREE.CylinderGeometry(
+                3,
+                3,
+                90,
+                6
+            ),
+
+            new THREE.MeshStandardMaterial({
+                color: 0x2a1c10
+            })
+
+        );
+
+
+    pole.position.set(
+        x,
+        45,
+        z
     );
 
 
-  pole.position.set(
-    x,
-    45,
-    z
-  );
+    scene.add(pole);
 
 
-  scene.add(pole);
+    const light =
+        new THREE.PointLight(
+            0xff7a1a,
+            1.6,
+            260
+        );
 
 
-  const flameLight =
-    new THREE.PointLight(
-      0xff7a1a,
-      1.6,
-      260
+    light.position.set(
+        x,
+        100,
+        z
     );
 
 
-  flameLight.position.set(
-    x,
-    100,
-    z
-  );
+    scene.add(light);
 
 
-  scene.add(flameLight);
+    const flame =
+        new THREE.Mesh(
+
+            new THREE.ConeGeometry(
+                6,
+                18,
+                8
+            ),
+
+            new THREE.MeshBasicMaterial({
+                color: 0xffaa33
+            })
+
+        );
 
 
-  const flameMesh =
-    new THREE.Mesh(
-      new THREE.ConeGeometry(
-        6,
-        18,
-        8
-      ),
-
-      new THREE.MeshBasicMaterial({
-        color: 0xffaa33
-      })
+    flame.position.set(
+        x,
+        100,
+        z
     );
 
 
-  flameMesh.position.set(
-    x,
-    100,
-    z
-  );
+    scene.add(flame);
 
 
-  scene.add(flameMesh);
-
-
-  return {
-    flameLight,
-    flameMesh,
-    baseIntensity: 1.6
-  };
+    return {
+        light,
+        flame
+    };
 
 }
 
 
 const torches = [
 
-  makeTorch(-320, -40),
-  makeTorch(320, -40),
-  makeTorch(-320, 200),
-  makeTorch(320, 200)
+    makeTorch(-320, -40),
+    makeTorch(320, -40),
+    makeTorch(-320, 200),
+    makeTorch(320, 200)
 
 ];
 
 
-/* =========================================
+/* =========================================================
    FLOOR
-========================================= */
-
-const floorGeo =
-  new THREE.PlaneGeometry(
-    1400,
-    900,
-    1,
-    1
-  );
-
-
-const floorMat =
-  new THREE.MeshStandardMaterial({
-    color: 0x241611,
-    roughness: 0.95
-  });
-
+========================================================= */
 
 const floor =
-  new THREE.Mesh(
-    floorGeo,
-    floorMat
-  );
+    new THREE.Mesh(
+
+        new THREE.PlaneGeometry(
+            1400,
+            900
+        ),
+
+        new THREE.MeshStandardMaterial({
+            color: 0x241611,
+            roughness: .95
+        })
+
+    );
 
 
 floor.rotation.x =
-  -Math.PI / 2;
-
-
-floor.position.y = 0;
+    -Math.PI / 2;
 
 
 scene.add(floor);
 
 
 const grid =
-  new THREE.GridHelper(
-    1400,
-    40,
-    0x8a1a1a,
-    0x2a1512
-  );
+    new THREE.GridHelper(
+        1400,
+        40,
+        0x8a1a1a,
+        0x2a1512
+    );
 
 
-grid.position.y = 0.5;
+grid.position.y = .5;
 
 
 scene.add(grid);
 
 
-/* =========================================
+/* =========================================================
    ARENA WALL
-========================================= */
-
-const wallGeo =
-  new THREE.CylinderGeometry(
-    700,
-    700,
-    260,
-    24,
-    1,
-    true
-  );
-
-
-const wallMat =
-  new THREE.MeshStandardMaterial({
-    color: 0x140a08,
-    side: THREE.BackSide,
-    roughness: 1
-  });
-
+========================================================= */
 
 const wall =
-  new THREE.Mesh(
-    wallGeo,
-    wallMat
-  );
+    new THREE.Mesh(
+
+        new THREE.CylinderGeometry(
+            700,
+            700,
+            260,
+            24,
+            1,
+            true
+        ),
+
+        new THREE.MeshStandardMaterial({
+            color: 0x140a08,
+            side: THREE.BackSide,
+            roughness: 1
+        })
+
+    );
 
 
 wall.position.y = 120;
@@ -1422,310 +1574,358 @@ wall.position.y = 120;
 scene.add(wall);
 
 
-/* =========================================
+/* =========================================================
    FIGHTER MODEL
-========================================= */
+========================================================= */
 
 function buildFighter(color) {
 
-  const group =
-    new THREE.Group();
+    const group =
+        new THREE.Group();
 
 
-  const mat =
-    new THREE.MeshStandardMaterial({
-      color,
-      roughness: 0.55,
-      metalness: 0.15,
-      emissive: color,
-      emissiveIntensity: 0.08
-    });
+    const bodyMaterial =
+        new THREE.MeshStandardMaterial({
+
+            color: color,
+
+            roughness: .55,
+
+            metalness: .15,
+
+            emissive: color,
+
+            emissiveIntensity: .08
+
+        });
 
 
-  const darkMat =
-    new THREE.MeshStandardMaterial({
-      color: 0x1a1210,
-      roughness: 0.8
-    });
+    const darkMaterial =
+        new THREE.MeshStandardMaterial({
+
+            color: 0x1a1210,
+
+            roughness: .8
+
+        });
 
 
-  const torso =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        30,
-        46,
-        20
-      ),
-      mat
-    );
+    const torso =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                30,
+                46,
+                20
+            ),
+
+            bodyMaterial
+
+        );
 
 
-  torso.position.y = 78;
+    torso.position.y = 78;
 
 
-  group.add(torso);
+    group.add(torso);
 
 
-  const head =
-    new THREE.Mesh(
-      new THREE.SphereGeometry(
-        12,
+    const head =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                12,
+                16,
+                16
+            ),
+
+            new THREE.MeshStandardMaterial({
+
+                color: 0xd8b48a,
+
+                roughness: .7
+
+            })
+
+        );
+
+
+    head.position.y = 112;
+
+
+    group.add(head);
+
+
+    const hips =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                26,
+                16,
+                18
+            ),
+
+            darkMaterial
+
+        );
+
+
+    hips.position.y = 50;
+
+
+    group.add(hips);
+
+
+    function limb(
+        length,
+        radius,
+        material
+    ) {
+
+        const pivot =
+            new THREE.Group();
+
+
+        const mesh =
+            new THREE.Mesh(
+
+                new THREE.CylinderGeometry(
+                    radius,
+                    radius * .85,
+                    length,
+                    8
+                ),
+
+                material
+
+            );
+
+
+        mesh.position.y =
+            -length / 2;
+
+
+        pivot.add(mesh);
+
+
+        return pivot;
+
+    }
+
+
+    const armR =
+        limb(
+            38,
+            6,
+            bodyMaterial
+        );
+
+
+    armR.position.set(
         16,
-        16
-      ),
-
-      new THREE.MeshStandardMaterial({
-        color: 0xd8b48a,
-        roughness: 0.7
-      })
+        96,
+        4
     );
 
 
-  head.position.y = 112;
+    group.add(armR);
 
 
-  group.add(head);
+    const armL =
+        limb(
+            38,
+            6,
+            bodyMaterial
+        );
 
 
-  const hips =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        26,
-        16,
-        18
-      ),
-      darkMat
+    armL.position.set(
+        -16,
+        96,
+        -4
     );
 
 
-  hips.position.y = 50;
+    group.add(armL);
 
 
-  group.add(hips);
+    const legR =
+        limb(
+            46,
+            7.5,
+            darkMaterial
+        );
 
 
-  function makeLimb(
-    len,
-    radius,
-    matUsed
-  ) {
-
-    const pivot =
-      new THREE.Group();
-
-
-    const mesh =
-      new THREE.Mesh(
-        new THREE.CylinderGeometry(
-          radius,
-          radius * 0.85,
-          len,
-          8
-        ),
-        matUsed
-      );
-
-
-    mesh.position.y =
-      -len / 2;
-
-
-    pivot.add(mesh);
-
-
-    return pivot;
-
-  }
-
-
-  const armR =
-    makeLimb(
-      38,
-      6,
-      mat
+    legR.position.set(
+        10,
+        44,
+        4
     );
 
 
-  armR.position.set(
-    16,
-    96,
-    4
-  );
+    group.add(legR);
 
 
-  group.add(armR);
+    const legL =
+        limb(
+            46,
+            7.5,
+            darkMaterial
+        );
 
 
-  const armL =
-    makeLimb(
-      38,
-      6,
-      mat
+    legL.position.set(
+        -10,
+        44,
+        -4
     );
 
 
-  armL.position.set(
-    -16,
-    96,
-    -4
-  );
+    group.add(legL);
 
 
-  armL.rotation.x =
-    0.15;
+    return {
 
+        group,
 
-  group.add(armL);
+        torso,
 
+        head,
 
-  const legR =
-    makeLimb(
-      46,
-      7.5,
-      darkMat
-    );
+        armR,
 
+        armL,
 
-  legR.position.set(
-    10,
-    44,
-    4
-  );
+        legR,
 
+        legL
 
-  group.add(legR);
-
-
-  const legL =
-    makeLimb(
-      46,
-      7.5,
-      darkMat
-    );
-
-
-  legL.position.set(
-    -10,
-    44,
-    -4
-  );
-
-
-  group.add(legL);
-
-
-  return {
-    group,
-    torso,
-    head,
-    armR,
-    armL,
-    legR,
-    legL,
-    baseColor: color
-  };
+    };
 
 }
 
 
-/* =========================================
+/* =========================================================
    FIGHTER STATE
-========================================= */
+========================================================= */
 
-function makeFighterState(
-  xStart,
-  facing,
-  color,
-  ctrl
+function createFighter(
+    x,
+    facing,
+    color,
+    controls
 ) {
 
-  const model =
-    buildFighter(color);
+    const model =
+        buildFighter(color);
 
 
-  scene.add(
-    model.group
-  );
+    scene.add(
+        model.group
+    );
 
 
-  return {
+    return {
 
-    x: xStart,
+        x: x,
 
-    y: 0,
+        y: 0,
 
-    z: 0,
+        z: 0,
 
-    vx: 0,
+        vx: 0,
 
-    vy: 0,
+        vy: 0,
 
-    facing,
+        facing: facing,
 
-    hp: 100,
+        hp: 100,
 
-    maxHp: 100,
+        onGround: true,
 
-    onGround: true,
+        blocking: false,
 
-    blocking: false,
+        attackType: null,
 
-    attackType: null,
+        attackTimer: 0,
 
-    attackTimer: 0,
+        attackDuration: 0,
 
-    attackDuration: 0,
+        attackCooldown: 0,
 
-    attackCooldown: 0,
+        hitThisSwing: false,
 
-    hitThisSwing: false,
+        hitStun: 0,
 
-    hitStun: 0,
+        controls: controls,
 
-    ctrl,
+        model: model
 
-    model
-
-  };
+    };
 
 }
 
 
 const p1 =
-  makeFighterState(
-    -140,
-    1,
-    0x28d4ff,
-    {
-      left: 'KeyA',
-      right: 'KeyD',
-      up: 'KeyW',
-      down: 'KeyS',
-      punch: 'KeyF',
-      kick: 'KeyG'
-    }
-  );
+    createFighter(
+
+        -140,
+
+        1,
+
+        0x28d4ff,
+
+        {
+
+            left: "KeyA",
+
+            right: "KeyD",
+
+            up: "KeyW",
+
+            down: "KeyS",
+
+            punch: "KeyF",
+
+            kick: "KeyG"
+
+        }
+
+    );
 
 
 const p2 =
-  makeFighterState(
-    140,
-    -1,
-    0xff7a29,
-    {
-      left: 'ArrowLeft',
-      right: 'ArrowRight',
-      up: 'ArrowUp',
-      down: 'ArrowDown',
-      punch: 'KeyK',
-      kick: 'KeyL'
-    }
-  );
+    createFighter(
+
+        140,
+
+        -1,
+
+        0xff7a29,
+
+        {
+
+            left: "ArrowLeft",
+
+            right: "ArrowRight",
+
+            up: "ArrowUp",
+
+            down: "ArrowDown",
+
+            punch: "KeyK",
+
+            kick: "KeyL"
+
+        }
+
+    );
 
 
-/* =========================================
-   INPUT SYSTEM
-========================================= */
+/* =========================================================
+   INPUT
+========================================================= */
 
 const keys = {};
 
@@ -1733,433 +1933,172 @@ const keys = {};
 /* Keyboard */
 
 window.addEventListener(
-  'keydown',
-  (e) => {
+    "keydown",
+    event => {
 
-    keys[e.code] = true;
+        keys[event.code] = true;
 
-  }
+    }
 );
 
 
 window.addEventListener(
-  'keyup',
-  (e) => {
+    "keyup",
+    event => {
 
-    keys[e.code] = false;
+        keys[event.code] = false;
 
-  }
+    }
 );
 
 
-/* =========================================
-   MOBILE TOUCH INPUT
-========================================= */
+/* =========================================================
+   TOUCH INPUT
+========================================================= */
 
 const touchButtons =
-  document.querySelectorAll(
-    '.touchBtn'
-  );
+    document.querySelectorAll(
+        ".touchBtn"
+    );
 
 
 touchButtons.forEach(
-  (button) => {
+    button => {
 
-    const key =
-      button.dataset.key;
+        const key =
+            button.dataset.key;
 
 
-    /* Pointer down */
+        button.addEventListener(
+            "pointerdown",
+            event => {
 
-    button.addEventListener(
-      'pointerdown',
-      (event) => {
+                event.preventDefault();
 
-        event.preventDefault();
+                keys[key] = true;
 
-        keys[key] = true;
+                button.classList.add(
+                    "pressed"
+                );
 
-        button.classList.add(
-          'pressed'
+
+                try {
+
+                    button.setPointerCapture(
+                        event.pointerId
+                    );
+
+                }
+
+                catch (error) {}
+
+            }
         );
 
-        try {
 
-          button.setPointerCapture(
-            event.pointerId
-          );
+        button.addEventListener(
+            "pointerup",
+            event => {
 
-        } catch (error) {}
+                event.preventDefault();
 
-      }
-    );
+                keys[key] = false;
 
+                button.classList.remove(
+                    "pressed"
+                );
 
-    /* Pointer up */
-
-    button.addEventListener(
-      'pointerup',
-      (event) => {
-
-        event.preventDefault();
-
-        keys[key] = false;
-
-        button.classList.remove(
-          'pressed'
+            }
         );
 
-      }
-    );
 
+        button.addEventListener(
+            "pointercancel",
+            event => {
 
-    /* Pointer cancel */
+                event.preventDefault();
 
-    button.addEventListener(
-      'pointercancel',
-      (event) => {
+                keys[key] = false;
 
-        event.preventDefault();
+                button.classList.remove(
+                    "pressed"
+                );
 
-        keys[key] = false;
-
-        button.classList.remove(
-          'pressed'
+            }
         );
 
-      }
-    );
 
+        button.addEventListener(
+            "lostpointercapture",
+            () => {
 
-    /* Pointer leaves button */
+                keys[key] = false;
 
-    button.addEventListener(
-      'pointerleave',
-      (event) => {
+                button.classList.remove(
+                    "pressed"
+                );
 
-        if (event.buttons === 0) {
+            }
+        );
 
-          keys[key] = false;
-
-          button.classList.remove(
-            'pressed'
-          );
-
-        }
-
-      }
-    );
-
-  }
+    }
 );
 
 
-/* Release all touch keys */
+/* Clear touch controls if window loses focus */
 
 window.addEventListener(
-  'blur',
-  () => {
+    "blur",
+    () => {
 
-    Object.keys(keys)
-      .forEach(
-        key => {
-          keys[key] = false;
-        }
-      );
+        Object.keys(keys).forEach(
+            key => {
 
-    touchButtons.forEach(
-      button => {
-        button.classList.remove(
-          'pressed'
+                keys[key] = false;
+
+            }
         );
-      }
-    );
 
-  }
+
+        touchButtons.forEach(
+            button => {
+
+                button.classList.remove(
+                    "pressed"
+                );
+
+            }
+        );
+
+    }
 );
 
 
-/* Prevent context menu */
+/* Prevent long-press menu */
 
 document
-  .getElementById('touchControls')
-  .addEventListener(
-    'contextmenu',
-    event => {
-      event.preventDefault();
-    }
-  );
+    .getElementById("touchControls")
+    .addEventListener(
+        "contextmenu",
+        event => {
 
+            event.preventDefault();
 
-/* =========================================
-   BLOOD PARTICLES
-========================================= */
-
-const bloodGeo =
-  new THREE.IcosahedronGeometry(
-    2.4,
-    0
-  );
-
-
-let particles = [];
-
-let decals = [];
-
-
-const decalGeo =
-  new THREE.CircleGeometry(
-    1,
-    10
-  );
-
-
-function spawnBlood(
-  x,
-  y,
-  z,
-  dirX
-) {
-
-  const n =
-    16 +
-    Math.floor(
-      Math.random() * 10
+        }
     );
 
 
-  for (
-    let i = 0;
-    i < n;
-    i++
-  ) {
-
-    const mat =
-      new THREE.MeshBasicMaterial({
-        color: 0xb30d1f,
-        transparent: true,
-        opacity: 1
-      });
-
-
-    const mesh =
-      new THREE.Mesh(
-        bloodGeo,
-        mat
-      );
-
-
-    mesh.position.set(
-      x,
-      y,
-      z +
-      (Math.random() - 0.5) * 10
-    );
-
-
-    mesh.scale.setScalar(
-      0.6 +
-      Math.random() * 0.8
-    );
-
-
-    scene.add(mesh);
-
-
-    particles.push({
-
-      mesh,
-
-      vx:
-        dirX *
-        (2 + Math.random() * 5) +
-        (Math.random() - 0.5) * 2,
-
-      vy:
-        Math.random() * 7 + 3,
-
-      vz:
-        (Math.random() - 0.5) * 4,
-
-      life:
-        45 +
-        Math.random() * 25
-
-    });
-
-  }
-
-}
-
-
-function addDecal(
-  x,
-  z
-) {
-
-  const mat =
-    new THREE.MeshBasicMaterial({
-      color: 0x5a0a12,
-      transparent: true,
-      opacity: 0.75,
-      depthWrite: false
-    });
-
-
-  const mesh =
-    new THREE.Mesh(
-      decalGeo,
-      mat
-    );
-
-
-  mesh.rotation.x =
-    -Math.PI / 2;
-
-
-  mesh.position.set(
-    x,
-    0.6,
-    z
-  );
-
-
-  const scale =
-    6 +
-    Math.random() * 10;
-
-
-  mesh.scale.set(
-    scale,
-    scale,
-    scale
-  );
-
-
-  scene.add(mesh);
-
-
-  decals.push(mesh);
-
-
-  if (
-    decals.length > 50
-  ) {
-
-    const old =
-      decals.shift();
-
-    scene.remove(old);
-
-  }
-
-}
-
-
-function updateParticles() {
-
-  for (
-    let i = particles.length - 1;
-    i >= 0;
-    i--
-  ) {
-
-    const p =
-      particles[i];
-
-
-    p.vy -= 0.5;
-
-
-    p.mesh.position.x +=
-      p.vx;
-
-
-    p.mesh.position.y +=
-      p.vy * 0.5;
-
-
-    p.mesh.position.z +=
-      p.vz;
-
-
-    p.life--;
-
-
-    p.mesh.material.opacity =
-      Math.max(
-        0,
-        p.life / 50
-      );
-
-
-    if (
-      p.mesh.position.y <= 1 ||
-      p.life <= 0
-    ) {
-
-      addDecal(
-        p.mesh.position.x,
-        p.mesh.position.z
-      );
-
-
-      scene.remove(
-        p.mesh
-      );
-
-
-      particles.splice(
-        i,
-        1
-      );
-
-    }
-
-  }
-
-}
-
-
-/* =========================================
-   GAME CONSTANTS
-========================================= */
+/* =========================================================
+   GAME VARIABLES
+========================================================= */
 
 const ARENA_LIMIT = 280;
-
-const GROUND_Y = 0;
 
 const SPEED = 4.4;
 
 const JUMP_V = 11.5;
 
-const GRAVITY = 0.55;
-
-
-function rectsOverlapX(
-  ax,
-  ay,
-  aw,
-  ah,
-  bx,
-  by,
-  bw,
-  bh
-) {
-
-  return (
-    ax < bx + bw &&
-    ax + aw > bx &&
-    ay < by + bh &&
-    ay + ah > by
-  );
-
-}
-
-
-/* =========================================
-   MATCH STATE
-========================================= */
+const GRAVITY = .55;
 
 let timeLeft = 60;
 
@@ -2172,1039 +2111,971 @@ let inIntro = true;
 let shakeTime = 0;
 
 
-/* =========================================
-   INPUT HANDLING
-========================================= */
+/* =========================================================
+   INPUT HANDLER
+========================================================= */
 
 function handleInput(
-  f,
-  other
+    fighter,
+    other
 ) {
 
-  if (
-    matchOver ||
-    inIntro
-  ) {
-    return;
-  }
-
-
-  f.vx = 0;
-
-
-  if (
-    f.hitStun > 0
-  ) {
-
-    f.hitStun--;
-
-    return;
-
-  }
-
-
-  f.blocking =
-    keys[f.ctrl.down] &&
-    f.onGround &&
-    !f.attackType;
-
-
-  if (!f.blocking) {
-
     if (
-      keys[f.ctrl.left]
+        matchOver ||
+        inIntro
     ) {
 
-      f.vx = -SPEED;
+        return;
 
     }
+
+
+    fighter.vx = 0;
 
 
     if (
-      keys[f.ctrl.right]
+        fighter.hitStun > 0
     ) {
 
-      f.vx = SPEED;
+        fighter.hitStun--;
+
+        return;
 
     }
 
-  }
 
+    fighter.blocking =
+        keys[fighter.controls.down] &&
+        fighter.onGround &&
+        !fighter.attackType;
 
-  if (
-    keys[f.ctrl.up] &&
-    f.onGround
-  ) {
-
-    f.vy =
-      JUMP_V;
-
-    f.onGround =
-      false;
-
-  }
-
-
-  f.facing =
-    other.x > f.x
-      ? 1
-      : -1;
-
-
-  if (
-    f.attackCooldown > 0
-  ) {
-
-    f.attackCooldown--;
-
-  }
-
-
-  if (
-    !f.attackType &&
-    f.attackCooldown <= 0 &&
-    !f.blocking
-  ) {
 
     if (
-      keys[f.ctrl.punch]
+        !fighter.blocking
     ) {
 
-      f.attackType =
-        'punch';
+        if (
+            keys[fighter.controls.left]
+        ) {
 
-      f.attackDuration =
-        14;
+            fighter.vx =
+                -SPEED;
 
-      f.attackTimer =
-        14;
+        }
 
-      f.hitThisSwing =
-        false;
+
+        if (
+            keys[fighter.controls.right]
+        ) {
+
+            fighter.vx =
+                SPEED;
+
+        }
 
     }
 
-    else if (
-      keys[f.ctrl.kick]
+
+    if (
+        keys[fighter.controls.up] &&
+        fighter.onGround
     ) {
 
-      f.attackType =
-        'kick';
+        fighter.vy =
+            JUMP_V;
 
-      f.attackDuration =
-        20;
-
-      f.attackTimer =
-        20;
-
-      f.hitThisSwing =
-        false;
+        fighter.onGround =
+            false;
 
     }
 
-  }
+
+    fighter.facing =
+        other.x > fighter.x
+            ? 1
+            : -1;
+
+
+    if (
+        fighter.attackCooldown > 0
+    ) {
+
+        fighter.attackCooldown--;
+
+    }
+
+
+    if (
+        !fighter.attackType &&
+        fighter.attackCooldown <= 0 &&
+        !fighter.blocking
+    ) {
+
+        if (
+            keys[fighter.controls.punch]
+        ) {
+
+            fighter.attackType =
+                "punch";
+
+            fighter.attackDuration =
+                14;
+
+            fighter.attackTimer =
+                14;
+
+            fighter.hitThisSwing =
+                false;
+
+        }
+
+        else if (
+            keys[fighter.controls.kick]
+        ) {
+
+            fighter.attackType =
+                "kick";
+
+            fighter.attackDuration =
+                20;
+
+            fighter.attackTimer =
+                20;
+
+            fighter.hitThisSwing =
+                false;
+
+        }
+
+    }
 
 }
 
 
-/* =========================================
-   UPDATE FIGHTER
-========================================= */
+/* =========================================================
+   FIGHTER UPDATE
+========================================================= */
 
-function updateFighter(f) {
+function updateFighter(
+    fighter
+) {
 
-  f.x += f.vx;
-
-  f.y += f.vy;
-
-
-  if (
-    !f.onGround
-  ) {
-
-    f.vy -= GRAVITY;
-
-  }
+    fighter.x +=
+        fighter.vx;
 
 
-  if (
-    f.y <= GROUND_Y
-  ) {
-
-    f.y =
-      GROUND_Y;
-
-    f.vy =
-      0;
-
-    f.onGround =
-      true;
-
-  }
+    fighter.y +=
+        fighter.vy;
 
 
-  f.x =
-    Math.max(
-      -ARENA_LIMIT,
-      Math.min(
-        ARENA_LIMIT,
-        f.x
-      )
+    if (
+        !fighter.onGround
+    ) {
+
+        fighter.vy -=
+            GRAVITY;
+
+    }
+
+
+    if (
+        fighter.y <= 0
+    ) {
+
+        fighter.y = 0;
+
+        fighter.vy = 0;
+
+        fighter.onGround = true;
+
+    }
+
+
+    fighter.x =
+        Math.max(
+            -ARENA_LIMIT,
+
+            Math.min(
+                ARENA_LIMIT,
+                fighter.x
+            )
+        );
+
+
+    if (
+        fighter.attackType
+    ) {
+
+        fighter.attackTimer--;
+
+
+        if (
+            fighter.attackTimer <= 0
+        ) {
+
+            fighter.attackType =
+                null;
+
+            fighter.attackCooldown =
+                10;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   HIT DETECTION
+========================================================= */
+
+function hitCheck(
+    attacker,
+    defender
+) {
+
+    if (
+        !attacker.attackType ||
+        attacker.hitThisSwing
+    ) {
+
+        return;
+
+    }
+
+
+    const activeStart =
+        attacker.attackType === "punch"
+            ? 5
+            : 7;
+
+
+    const activeEnd =
+        attacker.attackType === "punch"
+            ? 9
+            : 14;
+
+
+    const elapsed =
+        attacker.attackDuration -
+        attacker.attackTimer;
+
+
+    if (
+        elapsed < activeStart ||
+        elapsed > activeEnd
+    ) {
+
+        return;
+
+    }
+
+
+    const reach =
+        attacker.attackType === "punch"
+            ? 44
+            : 58;
+
+
+    const distance =
+        Math.abs(
+            attacker.x -
+            defender.x
+        );
+
+
+    if (
+        distance <= reach
+    ) {
+
+        attacker.hitThisSwing =
+            true;
+
+
+        let damage =
+            attacker.attackType === "punch"
+                ? 6
+                : 10;
+
+
+        if (
+            defender.blocking
+        ) {
+
+            damage *= .15;
+
+            defender.vx +=
+                attacker.facing * 2;
+
+            shakeTime = 4;
+
+        }
+
+        else {
+
+            defender.hitStun =
+                10;
+
+            defender.vx =
+                attacker.facing * 5;
+
+            shakeTime = 10;
+
+        }
+
+
+        defender.hp =
+            Math.max(
+                0,
+                defender.hp - damage
+            );
+
+    }
+
+}
+
+
+/* =========================================================
+   FIGHTER ANIMATION
+========================================================= */
+
+function animateFighter(
+    fighter
+) {
+
+    const m =
+        fighter.model;
+
+
+    m.group.position.set(
+        fighter.x,
+        fighter.y,
+        fighter.z
     );
 
 
-  if (
-    f.attackType
-  ) {
-
-    f.attackTimer--;
-
-
-    if (
-      f.attackTimer <= 0
-    ) {
-
-      f.attackType =
-        null;
-
-      f.attackCooldown =
-        10;
-
-    }
-
-  }
-
-}
+    m.group.rotation.y =
+        fighter.facing === 1
+            ? 0
+            : Math.PI;
 
 
-/* =========================================
-   HIT DETECTION
-========================================= */
-
-function tryHit(
-  attacker,
-  defender
-) {
-
-  if (
-    !attacker.attackType ||
-    attacker.hitThisSwing
-  ) {
-
-    return;
-
-  }
+    const t =
+        performance.now() * .004;
 
 
-  const activeWindow =
-    attacker.attackType === 'punch'
-      ? [5, 9]
-      : [7, 14];
+    const bob =
+        fighter.onGround &&
+        fighter.vx === 0 &&
+        !fighter.attackType
+
+            ? Math.sin(t) * 1.5
+            : 0;
 
 
-  const elapsed =
-    attacker.attackDuration -
-    attacker.attackTimer;
+    m.torso.position.y =
+        78 + bob;
 
 
-  if (
-    elapsed < activeWindow[0] ||
-    elapsed > activeWindow[1]
-  ) {
-
-    return;
-
-  }
+    m.head.position.y =
+        112 + bob;
 
 
-  const reach =
-    attacker.attackType === 'punch'
-      ? 44
-      : 58;
+    let armR = .1;
 
+    let armL = -.1;
 
-  const attackerW = 30;
+    let legR = 0;
 
-
-  const hitboxX =
-    attacker.facing === 1
-      ? attacker.x +
-        attackerW / 2
-      : attacker.x -
-        attackerW / 2 -
-        reach;
-
-
-  const hitboxY =
-    attacker.y + 40;
-
-
-  const defenderW = 30;
-
-  const defenderH = 90;
-
-
-  if (
-    rectsOverlapX(
-      hitboxX,
-      hitboxY,
-      reach,
-      40,
-      defender.x -
-        defenderW / 2,
-      defender.y,
-      defenderW,
-      defenderH
-    )
-  ) {
-
-    attacker.hitThisSwing =
-      true;
-
-
-    const dmg =
-      attacker.attackType === 'punch'
-        ? 6
-        : 10;
+    let legL = 0;
 
 
     if (
-      defender.blocking
+        fighter.attackType === "punch"
     ) {
 
-      defender.hp -=
-        dmg * 0.15;
+        const progress =
+            1 -
+            fighter.attackTimer /
+            fighter.attackDuration;
 
 
-      defender.vx +=
-        attacker.facing * 2;
-
-
-      shakeTime = 4;
-
-    }
-
-    else {
-
-      defender.hp -=
-        dmg;
-
-
-      defender.hitStun =
-        10;
-
-
-      defender.vx =
-        attacker.facing * 5;
-
-
-      spawnBlood(
-        defender.x,
-        defender.y + 75,
-        defender.z,
-        attacker.facing
-      );
-
-
-      shakeTime = 10;
+        armR =
+            -Math.sin(
+                progress * Math.PI
+            ) * 2;
 
     }
 
 
-    defender.hp =
-      Math.max(
-        0,
-        defender.hp
-      );
+    else if (
+        fighter.attackType === "kick"
+    ) {
 
-  }
+        const progress =
+            1 -
+            fighter.attackTimer /
+            fighter.attackDuration;
+
+
+        legR =
+            -Math.sin(
+                progress * Math.PI
+            ) * 1.3;
+
+    }
+
+
+    else if (
+        fighter.blocking
+    ) {
+
+        armR = -1.2;
+
+        armL = 1.2;
+
+    }
+
+
+    else if (
+        !fighter.onGround
+    ) {
+
+        legR = -.4;
+
+        legL = .5;
+
+        armR = -.3;
+
+        armL = .3;
+
+    }
+
+
+    else if (
+        Math.abs(
+            fighter.vx
+        ) > .1
+    ) {
+
+        legR =
+            Math.sin(t * 3) * .6;
+
+        legL =
+            -Math.sin(t * 3) * .6;
+
+        armR =
+            -Math.sin(t * 3) * .4;
+
+        armL =
+            Math.sin(t * 3) * .4;
+
+    }
+
+
+    m.armR.rotation.x +=
+        (
+            armR -
+            m.armR.rotation.x
+        ) * .35;
+
+
+    m.armL.rotation.x +=
+        (
+            armL -
+            m.armL.rotation.x
+        ) * .35;
+
+
+    m.legR.rotation.x +=
+        (
+            legR -
+            m.legR.rotation.x
+        ) * .35;
+
+
+    m.legL.rotation.x +=
+        (
+            legL -
+            m.legL.rotation.x
+        ) * .35;
 
 }
 
 
-/* =========================================
-   VISUAL ANIMATION
-========================================= */
-
-function animateFighter(f) {
-
-  const m =
-    f.model;
-
-
-  m.group.position.set(
-    f.x,
-    f.y,
-    f.z
-  );
-
-
-  m.group.rotation.y =
-    f.facing === 1
-      ? 0
-      : Math.PI;
-
-
-  const t =
-    performance.now() *
-    0.004;
-
-
-  const bob =
-    f.onGround &&
-    f.vx === 0 &&
-    !f.attackType
-
-      ? Math.sin(
-          t + f.x
-        ) * 1.5
-
-      : 0;
-
-
-  m.torso.position.y =
-    78 + bob;
-
-
-  m.head.position.y =
-    112 + bob;
-
-
-  let armRRot = 0.1;
-
-  let armLRot = -0.1;
-
-  let legRRot = 0;
-
-  let legLRot = 0;
-
-
-  if (
-    f.attackType === 'punch'
-  ) {
-
-    const progress =
-      1 -
-      f.attackTimer /
-      f.attackDuration;
-
-
-    const swing =
-      Math.sin(
-        progress * Math.PI
-      );
-
-
-    armRRot =
-      -swing * 2.0;
-
-  }
-
-  else if (
-    f.attackType === 'kick'
-  ) {
-
-    const progress =
-      1 -
-      f.attackTimer /
-      f.attackDuration;
-
-
-    const swing =
-      Math.sin(
-        progress * Math.PI
-      );
-
-
-    legRRot =
-      -swing * 1.3;
-
-  }
-
-  else if (
-    f.blocking
-  ) {
-
-    armRRot =
-      -1.2;
-
-    armLRot =
-      1.2;
-
-  }
-
-  else if (
-    !f.onGround
-  ) {
-
-    legRRot =
-      -0.4;
-
-    legLRot =
-      0.5;
-
-    armRRot =
-      -0.3;
-
-    armLRot =
-      0.3;
-
-  }
-
-  else if (
-    Math.abs(f.vx) > 0.1
-  ) {
-
-    legRRot =
-      Math.sin(t * 3) * 0.6;
-
-    legLRot =
-      -Math.sin(t * 3) * 0.6;
-
-    armRRot =
-      -Math.sin(t * 3) * 0.4;
-
-    armLRot =
-      Math.sin(t * 3) * 0.4;
-
-  }
-
-
-  m.armR.rotation.x +=
-    (
-      armRRot -
-      m.armR.rotation.x
-    ) * 0.35;
-
-
-  m.armL.rotation.x +=
-    (
-      armLRot -
-      m.armL.rotation.x
-    ) * 0.35;
-
-
-  m.legR.rotation.x +=
-    (
-      legRRot -
-      m.legR.rotation.x
-    ) * 0.35;
-
-
-  m.legL.rotation.x +=
-    (
-      legLRot -
-      m.legL.rotation.x
-    ) * 0.35;
-
-
-  const flash =
-    f.hitStun > 0
-      ? 0.6
-      : 0.08;
-
-
-  m.torso.material.emissiveIntensity +=
-    (
-      flash -
-      m.torso.material.emissiveIntensity
-    ) * 0.4;
-
-}
-
-
-/* =========================================
+/* =========================================================
    HUD
-========================================= */
+========================================================= */
 
 function updateHUD() {
 
-  const hp1El =
+    const hp1 =
+        document.getElementById(
+            "hp1"
+        );
+
+
+    const hp2 =
+        document.getElementById(
+            "hp2"
+        );
+
+
+    hp1.style.width =
+        p1.hp + "%";
+
+
+    hp2.style.width =
+        p2.hp + "%";
+
+
+    hp1.classList.toggle(
+        "low",
+        p1.hp < 30
+    );
+
+
+    hp2.classList.toggle(
+        "low",
+        p2.hp < 30
+    );
+
+
     document.getElementById(
-      'hp1'
-    );
-
-
-  const hp2El =
-    document.getElementById(
-      'hp2'
-    );
-
-
-  hp1El.style.width =
-    Math.max(
-      0,
-      p1.hp
-    ) + '%';
-
-
-  hp2El.style.width =
-    Math.max(
-      0,
-      p2.hp
-    ) + '%';
-
-
-  hp1El.classList.toggle(
-    'low',
-    p1.hp < 30
-  );
-
-
-  hp2El.classList.toggle(
-    'low',
-    p2.hp < 30
-  );
-
-
-  document.getElementById(
-    'timer'
-  ).textContent =
-    Math.max(
-      0,
-      Math.ceil(timeLeft)
-    );
+        "timer"
+    ).textContent =
+        Math.max(
+            0,
+            Math.ceil(timeLeft)
+        );
 
 }
 
 
-/* =========================================
+/* =========================================================
    BANNER
-========================================= */
+========================================================= */
 
 function showBanner(
-  text
+    text
 ) {
 
-  const b =
-    document.getElementById(
-      'banner'
-    );
+    const banner =
+        document.getElementById(
+            "banner"
+        );
 
 
-  b.textContent =
-    text;
+    banner.textContent =
+        text;
 
 
-  b.style.display =
-    'block';
+    banner.style.display =
+        "block";
 
 }
 
 
 function hideBanner() {
 
-  document.getElementById(
-    'banner'
-  ).style.display =
-    'none';
+    document.getElementById(
+        "banner"
+    ).style.display =
+        "none";
 
 }
 
 
-/* =========================================
+/* =========================================================
    END MATCH
-========================================= */
+========================================================= */
 
 function endMatch(
-  text
+    text
 ) {
 
-  matchOver =
-    true;
+    matchOver = true;
+
+    showBanner(
+        text
+    );
 
 
-  showBanner(
-    text
-  );
-
-
-  document.getElementById(
-    'restartBtn'
-  ).style.display =
-    'inline-block';
+    document.getElementById(
+        "restartBtn"
+    ).style.display =
+        "block";
 
 }
 
 
-/* =========================================
+/* =========================================================
    REMATCH
-========================================= */
+========================================================= */
 
 document
-  .getElementById(
-    'restartBtn'
-  )
-  .addEventListener(
-    'click',
-    () => {
+    .getElementById(
+        "restartBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
 
-      p1.x = -140;
-      p1.y = 0;
-      p1.vx = 0;
-      p1.vy = 0;
-      p1.hp = 100;
-      p1.attackType = null;
-      p1.attackCooldown = 0;
-      p1.hitStun = 0;
-      p1.blocking = false;
-
-
-      p2.x = 140;
-      p2.y = 0;
-      p2.vx = 0;
-      p2.vy = 0;
-      p2.hp = 100;
-      p2.attackType = null;
-      p2.attackCooldown = 0;
-      p2.hitStun = 0;
-      p2.blocking = false;
+            p1.x = -140;
+            p1.y = 0;
+            p1.vx = 0;
+            p1.vy = 0;
+            p1.hp = 100;
+            p1.attackType = null;
+            p1.attackTimer = 0;
+            p1.attackCooldown = 0;
+            p1.hitStun = 0;
+            p1.blocking = false;
 
 
-      particles.forEach(
-        p => scene.remove(
-          p.mesh
-        )
-      );
+            p2.x = 140;
+            p2.y = 0;
+            p2.vx = 0;
+            p2.vy = 0;
+            p2.hp = 100;
+            p2.attackType = null;
+            p2.attackTimer = 0;
+            p2.attackCooldown = 0;
+            p2.hitStun = 0;
+            p2.blocking = false;
 
 
-      particles = [];
+            timeLeft = 60;
+
+            matchOver = false;
+
+            inIntro = true;
+
+            introTimer = 3.5;
 
 
-      decals.forEach(
-        d => scene.remove(d)
-      );
+            document.getElementById(
+                "restartBtn"
+            ).style.display =
+                "none";
 
 
-      decals = [];
+            Object.keys(keys).forEach(
+                key => {
+
+                    keys[key] = false;
+
+                }
+            );
 
 
-      timeLeft = 60;
+            touchButtons.forEach(
+                button => {
 
-      matchOver = false;
+                    button.classList.remove(
+                        "pressed"
+                    );
 
-      inIntro = true;
+                }
+            );
 
-      introTimer = 3.5;
-
-
-      document.getElementById(
-        'restartBtn'
-      ).style.display =
-        'none';
-
-
-      Object.keys(keys)
-        .forEach(
-          key => {
-            keys[key] = false;
-          }
-        );
-
-    }
-  );
-
-
-/* =========================================
-   MAIN GAME LOOP
-========================================= */
-
-let lastTick =
-  performance.now();
-
-
-function loop(now) {
-
-  const dt =
-    Math.min(
-      (now - lastTick) / 1000,
-      0.05
+        }
     );
 
 
-  lastTick =
-    now;
+/* =========================================================
+   GAME LOOP
+========================================================= */
+
+let lastTime =
+    performance.now();
 
 
-  /* Torch animation */
+function gameLoop(
+    now
+) {
 
-  torches.forEach(
-    tr => {
+    const dt =
+        Math.min(
+            (now - lastTime) / 1000,
+            .05
+        );
 
-      tr.flameLight.intensity =
-        tr.baseIntensity +
-        Math.random() * 0.5;
+
+    lastTime =
+        now;
 
 
-      tr.flameMesh.scale.y =
-        0.85 +
-        Math.random() * 0.3;
+    /* Torch animation */
+
+    torches.forEach(
+        torch => {
+
+            torch.light.intensity =
+                1.4 +
+                Math.random() * .5;
+
+
+            torch.flame.scale.y =
+                .85 +
+                Math.random() * .3;
+
+        }
+    );
+
+
+    /* Intro */
+
+    if (
+        inIntro
+    ) {
+
+        introTimer -= dt;
+
+
+        if (
+            introTimer <= 0
+        ) {
+
+            inIntro = false;
+
+            hideBanner();
+
+        }
+
+        else if (
+            introTimer > .7
+        ) {
+
+            showBanner(
+                Math.ceil(
+                    introTimer - .7
+                )
+            );
+
+        }
+
+        else {
+
+            showBanner(
+                "FIGHT!"
+            );
+
+        }
 
     }
-  );
 
 
-  /* Intro */
+    /* Match */
 
-  if (inIntro) {
+    else if (
+        !matchOver
+    ) {
 
-    introTimer -= dt;
+        timeLeft -= dt;
+
+
+        handleInput(
+            p1,
+            p2
+        );
+
+
+        handleInput(
+            p2,
+            p1
+        );
+
+
+        updateFighter(
+            p1
+        );
+
+
+        updateFighter(
+            p2
+        );
+
+
+        hitCheck(
+            p1,
+            p2
+        );
+
+
+        hitCheck(
+            p2,
+            p1
+        );
+
+
+        /* Winner */
+
+        if (
+            p1.hp <= 0 ||
+            p2.hp <= 0
+        ) {
+
+            if (
+                p1.hp <= 0 &&
+                p2.hp <= 0
+            ) {
+
+                endMatch(
+                    "DOUBLE K.O."
+                );
+
+            }
+
+            else if (
+                p1.hp <= 0
+            ) {
+
+                endMatch(
+                    "VOLKAN WINS"
+                );
+
+            }
+
+            else {
+
+                endMatch(
+                    "RONIN WINS"
+                );
+
+            }
+
+        }
+
+
+        else if (
+            timeLeft <= 0
+        ) {
+
+            if (
+                p1.hp > p2.hp
+            ) {
+
+                endMatch(
+                    "RONIN WINS"
+                );
+
+            }
+
+            else if (
+                p2.hp > p1.hp
+            ) {
+
+                endMatch(
+                    "VOLKAN WINS"
+                );
+
+            }
+
+            else {
+
+                endMatch(
+                    "DRAW"
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* Fighter animation */
+
+    animateFighter(
+        p1
+    );
+
+
+    animateFighter(
+        p2
+    );
+
+
+    /* Camera */
+
+    const middle =
+        (
+            p1.x +
+            p2.x
+        ) / 2;
+
+
+    let cameraX =
+        middle * .18;
+
+
+    let cameraY =
+        130;
+
+
+    let cameraZ =
+        430;
 
 
     if (
-      introTimer <= 0
+        shakeTime > 0
     ) {
 
-      inIntro = false;
+        cameraX +=
+            (
+                Math.random() - .5
+            ) * shakeTime;
 
-      hideBanner();
 
-    }
+        cameraY +=
+            (
+                Math.random() - .5
+            ) * shakeTime;
 
-    else if (
-      introTimer > 0.7
-    ) {
 
-      showBanner(
-        Math.ceil(
-          introTimer - 0.7
-        )
-      );
+        shakeTime--;
 
     }
 
-    else {
 
-      showBanner(
-        'FIGHT!'
-      );
-
-    }
-
-  }
-
-
-  /* Game */
-
-  else if (!matchOver) {
-
-    timeLeft -= dt;
-
-
-    handleInput(
-      p1,
-      p2
+    camera.position.set(
+        cameraX,
+        cameraY,
+        cameraZ
     );
 
 
-    handleInput(
-      p2,
-      p1
+    camera.lookAt(
+        middle * .3,
+        70,
+        0
     );
 
 
-    updateFighter(
-      p1
+    /* HUD */
+
+    updateHUD();
+
+
+    /* Render */
+
+    renderer.render(
+        scene,
+        camera
     );
 
 
-    updateFighter(
-      p2
+    requestAnimationFrame(
+        gameLoop
     );
-
-
-    tryHit(
-      p1,
-      p2
-    );
-
-
-    tryHit(
-      p2,
-      p1
-    );
-
-
-    /* Match result */
-
-    if (
-      p1.hp <= 0 ||
-      p2.hp <= 0
-    ) {
-
-      if (
-        p1.hp <= 0 &&
-        p2.hp <= 0
-      ) {
-
-        endMatch(
-          'DOUBLE K.O.'
-        );
-
-      }
-
-      else if (
-        p1.hp <= 0
-      ) {
-
-        endMatch(
-          'VOLKAN WINS'
-        );
-
-      }
-
-      else {
-
-        endMatch(
-          'RONIN WINS'
-        );
-
-      }
-
-    }
-
-    else if (
-      timeLeft <= 0
-    ) {
-
-      if (
-        p1.hp > p2.hp
-      ) {
-
-        endMatch(
-          'RONIN WINS'
-        );
-
-      }
-
-      else if (
-        p2.hp > p1.hp
-      ) {
-
-        endMatch(
-          'VOLKAN WINS'
-        );
-
-      }
-
-      else {
-
-        endMatch(
-          'DRAW'
-        );
-
-      }
-
-    }
-
-  }
-
-
-  /* Particles */
-
-  updateParticles();
-
-
-  /* Fighters */
-
-  animateFighter(
-    p1
-  );
-
-
-  animateFighter(
-    p2
-  );
-
-
-  /* =====================================
-     CAMERA
-  ====================================== */
-
-  const midX =
-    (
-      p1.x +
-      p2.x
-    ) / 2;
-
-
-  const sway =
-    Math.sin(
-      now * 0.0004
-    ) * 6;
-
-
-  let camX =
-    camBase.x +
-    midX * 0.18 +
-    sway;
-
-
-  let camY =
-    camBase.y;
-
-
-  let camZ =
-    camBase.z;
-
-
-  if (
-    shakeTime > 0
-  ) {
-
-    camX +=
-      (
-        Math.random() - 0.5
-      ) * shakeTime;
-
-
-    camY +=
-      (
-        Math.random() - 0.5
-      ) * shakeTime;
-
-
-    shakeTime -= 1;
-
-  }
-
-
-  camera.position.set(
-    camX,
-    camY,
-    camZ
-  );
-
-
-  camera.lookAt(
-    midX * 0.3,
-    70,
-    0
-  );
-
-
-  /* HUD */
-
-  updateHUD();
-
-
-  /* Render */
-
-  renderer.render(
-    scene,
-    camera
-  );
-
-
-  requestAnimationFrame(
-    loop
-  );
 
 }
 
 
 requestAnimationFrame(
-  loop
+    gameLoop
 );
 
 </script>
