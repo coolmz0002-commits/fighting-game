@@ -10,14 +10,17 @@
 
 <style>
   :root{
-    --bg:#ffffff;
+    --bg:#000000;
     --blood:#c8102e;
     --blood-bright:#ff2438;
-    --gold:#d08a18;
-    --gold-dim:#9a741f;
-    --p1:#ff1616;
+    --gold:#e8a33d;
+    --gold-dim:#8a6423;
+
+    /* CHARACTER COLORS */
+    --p1:#ff2020;
     --p2:#39ff14;
-    --panel:#111111;
+
+    --panel:#090909;
   }
 
   * {
@@ -27,17 +30,17 @@
   html, body {
     margin: 0;
     height: 100%;
-    background: #ffffff;
+    background: #000;
     overflow: hidden;
     font-family: 'Oswald', sans-serif;
-    color: #222;
+    color: #f2e9dd;
   }
 
   #stage {
     position: relative;
     width: 100vw;
     height: 100vh;
-    background: #ffffff;
+    background: #000;
   }
 
   canvas#three-canvas {
@@ -46,12 +49,17 @@
     display: block;
   }
 
-  /* Clean white background */
+  /* DARK VIGNETTE */
   .vignette {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: transparent;
+    background:
+      radial-gradient(
+        ellipse at center,
+        transparent 48%,
+        rgba(0,0,0,0.45) 100%
+      );
     z-index: 3;
   }
 
@@ -65,11 +73,11 @@
     font-size: 34px;
     letter-spacing: 10px;
 
-    color: #c58a22;
+    color: var(--gold);
 
     text-shadow:
-      0 0 12px rgba(208,138,24,0.25),
-      0 2px 0 rgba(0,0,0,0.25);
+      0 0 18px rgba(232,163,61,0.55),
+      0 2px 0 #000;
 
     z-index: 4;
     pointer-events: none;
@@ -94,16 +102,21 @@
   .panel {
     width: 38%;
 
-    background: rgba(255,255,255,0.92);
+    background:
+      linear-gradient(
+        180deg,
+        rgba(12,12,12,0.92),
+        rgba(5,5,5,0.78)
+      );
 
-    border: 1px solid #b79555;
+    border: 1px solid var(--gold-dim);
 
     padding: 8px 12px;
 
     position: relative;
 
     box-shadow:
-      0 4px 15px rgba(0,0,0,0.12);
+      0 0 15px rgba(0,0,0,0.6);
   }
 
   .panel.right {
@@ -114,23 +127,22 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 20px;
     letter-spacing: 3px;
-    color: #222;
   }
 
-  /* RONIN - RED */
+  /* RONIN */
   .fighterName.p1 {
-    color: #ff1616;
+    color: var(--p1);
 
     text-shadow:
-      0 0 10px rgba(255,22,22,0.45);
+      0 0 12px rgba(255,32,32,0.8);
   }
 
-  /* VOLKAN - NEON GREEN */
+  /* VOLKAN */
   .fighterName.p2 {
-    color: #20d900;
+    color: var(--p2);
 
     text-shadow:
-      0 0 10px rgba(57,255,20,0.65);
+      0 0 12px rgba(57,255,20,0.8);
   }
 
   .healthOuter {
@@ -139,12 +151,12 @@
     width: 100%;
     height: 16px;
 
-    background: #eeeeee;
+    background: #1c0e0e;
 
-    border: 1px solid #333;
+    border: 1px solid #000;
 
     box-shadow:
-      inset 0 0 5px rgba(0,0,0,0.25);
+      inset 0 0 6px rgba(0,0,0,0.9);
 
     position: relative;
     overflow: hidden;
@@ -154,23 +166,25 @@
     height: 100%;
     width: 100%;
 
-    background: linear-gradient(
-      180deg,
-      #ffe37a,
-      var(--gold) 40%,
-      #b5761a
-    );
+    background:
+      linear-gradient(
+        180deg,
+        #ffe37a,
+        var(--gold) 40%,
+        #b5761a
+      );
 
     transition: width 0.18s ease;
   }
 
   .healthInner.low {
-    background: linear-gradient(
-      180deg,
-      #ff6a5e,
-      var(--blood-bright) 40%,
-      #7a0f1a
-    );
+    background:
+      linear-gradient(
+        180deg,
+        #ff6a5e,
+        var(--blood-bright) 40%,
+        #7a0f1a
+      );
   }
 
   #timerWrap {
@@ -178,11 +192,11 @@
 
     font-size: 44px;
 
-    color: #b57918;
+    color: var(--gold);
 
     text-shadow:
-      0 0 12px rgba(208,138,24,0.35),
-      0 2px 0 rgba(0,0,0,0.2);
+      0 0 14px rgba(232,163,61,0.6),
+      0 2px 0 #000;
 
     line-height: 1;
 
@@ -203,11 +217,11 @@
 
     letter-spacing: 6px;
 
-    color: #e3132c;
+    color: var(--blood-bright);
 
     text-shadow:
-      0 0 25px rgba(227,19,44,0.35),
-      0 3px 0 rgba(0,0,0,0.25);
+      0 0 30px rgba(200,16,46,0.8),
+      0 3px 0 #000;
 
     z-index: 5;
 
@@ -232,15 +246,16 @@
 
     letter-spacing: 3px;
 
-    background: linear-gradient(
-      180deg,
-      #ffffff,
-      #eeeeee
-    );
+    background:
+      linear-gradient(
+        180deg,
+        #3a1414,
+        #1a0808
+      );
 
-    color: #a87518;
+    color: var(--gold);
 
-    border: 1px solid #a87518;
+    border: 1px solid var(--gold-dim);
 
     padding: 10px 26px;
 
@@ -249,13 +264,10 @@
     display: none;
 
     z-index: 5;
-
-    box-shadow:
-      0 4px 12px rgba(0,0,0,0.12);
   }
 
   #restartBtn:hover {
-    background: #f5f5f5;
+    background: #4a1a1a;
   }
 
   #controls {
@@ -270,7 +282,7 @@
 
     letter-spacing: 1px;
 
-    color: rgba(0,0,0,0.55);
+    color: rgba(242,233,221,0.65);
 
     z-index: 4;
 
@@ -280,7 +292,7 @@
   }
 
   #controls b {
-    color: #a87518;
+    color: var(--gold);
   }
 </style>
 </head>
@@ -348,16 +360,18 @@
 <script>
 
 /* =========================================================
-   BASIC SETUP
+   THREE.JS SETUP
 ========================================================= */
 
-const canvas = document.getElementById('three-canvas');
+const canvas =
+  document.getElementById('three-canvas');
 
-const renderer = new THREE.WebGLRenderer({
-  canvas,
-  antialias: true,
-  alpha: false
-});
+const renderer =
+  new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+    alpha: false
+  });
 
 renderer.setPixelRatio(
   Math.min(window.devicePixelRatio, 2)
@@ -373,36 +387,46 @@ renderer.setSize(
    SCENE
 ========================================================= */
 
-const scene = new THREE.Scene();
+const scene =
+  new THREE.Scene();
 
-/* WHITE BACKGROUND */
-scene.background = new THREE.Color(0xffffff);
+/* BLACK BACKGROUND */
 
-/* WHITE FOG */
-scene.fog = new THREE.FogExp2(
-  0xffffff,
-  0.0015
-);
+scene.background =
+  new THREE.Color(0x000000);
+
+/* Very light fog */
+
+scene.fog =
+  new THREE.FogExp2(
+    0x000000,
+    0.0012
+  );
 
 
 /* =========================================================
    CAMERA
 ========================================================= */
 
-const camera = new THREE.PerspectiveCamera(
-  42,
-  window.innerWidth / window.innerHeight,
-  1,
-  3000
-);
+const camera =
+  new THREE.PerspectiveCamera(
+    42,
+    window.innerWidth /
+      window.innerHeight,
+    1,
+    3000
+  );
 
-const camBase = new THREE.Vector3(
-  0,
-  130,
-  430
-);
+const camBase =
+  new THREE.Vector3(
+    0,
+    130,
+    430
+  );
 
-camera.position.copy(camBase);
+camera.position.copy(
+  camBase
+);
 
 camera.lookAt(
   0,
@@ -411,54 +435,60 @@ camera.lookAt(
 );
 
 
-window.addEventListener('resize', () => {
+window.addEventListener(
+  'resize',
+  () => {
 
-  camera.aspect =
-    window.innerWidth /
-    window.innerHeight;
+    camera.aspect =
+      window.innerWidth /
+      window.innerHeight;
 
-  camera.updateProjectionMatrix();
+    camera.updateProjectionMatrix();
 
-  renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-  );
+    renderer.setSize(
+      window.innerWidth,
+      window.innerHeight
+    );
 
-});
+  }
+);
 
 
 /* =========================================================
    LIGHTING
 ========================================================= */
 
+/* Strong ambient light */
+
 scene.add(
   new THREE.AmbientLight(
     0xffffff,
-    1.8
+    1.35
   )
 );
 
 
-/* Main white light */
+/* Main white spotlight */
 
-const spot = new THREE.SpotLight(
-  0xffffff,
-  2.5,
-  1400,
-  Math.PI / 4.2,
-  0.5,
-  1.4
-);
+const spot =
+  new THREE.SpotLight(
+    0xffffff,
+    3.2,
+    1500,
+    Math.PI / 3.5,
+    0.45,
+    1.2
+  );
 
 spot.position.set(
   0,
   500,
-  120
+  250
 );
 
 spot.target.position.set(
   0,
-  0,
+  60,
   0
 );
 
@@ -468,38 +498,68 @@ scene.add(
 );
 
 
-/* RED RIM LIGHT - RONIN */
+/* =========================================================
+   RONIN RED LIGHT
+========================================================= */
 
-const rimP1 = new THREE.PointLight(
-  0xff1616,
-  3.0,
-  500
-);
+const rimP1 =
+  new THREE.PointLight(
+    0xff1010,
+    5,
+    650
+  );
 
 rimP1.position.set(
-  -220,
-  90,
-  140
+  -240,
+  120,
+  180
 );
 
-scene.add(rimP1);
-
-
-/* NEON GREEN RIM LIGHT - VOLKAN */
-
-const rimP2 = new THREE.PointLight(
-  0x39ff14,
-  3.0,
-  500
+scene.add(
+  rimP1
 );
+
+
+/* =========================================================
+   VOLKAN NEON GREEN LIGHT
+========================================================= */
+
+const rimP2 =
+  new THREE.PointLight(
+    0x39ff14,
+    5,
+    650
+  );
 
 rimP2.position.set(
-  220,
-  90,
-  140
+  240,
+  120,
+  180
 );
 
-scene.add(rimP2);
+scene.add(
+  rimP2
+);
+
+
+/* Extra front light */
+
+const frontLight =
+  new THREE.PointLight(
+    0xffffff,
+    1.8,
+    700
+  );
+
+frontLight.position.set(
+  0,
+  160,
+  300
+);
+
+scene.add(
+  frontLight
+);
 
 
 /* =========================================================
@@ -508,18 +568,22 @@ scene.add(rimP2);
 
 function makeTorch(x, z) {
 
-  const pole = new THREE.Mesh(
-    new THREE.CylinderGeometry(
-      3,
-      3,
-      90,
-      6
-    ),
+  const pole =
+    new THREE.Mesh(
 
-    new THREE.MeshStandardMaterial({
-      color: 0x555555
-    })
-  );
+      new THREE.CylinderGeometry(
+        3,
+        3,
+        90,
+        6
+      ),
+
+      new THREE.MeshStandardMaterial({
+        color: 0x333333,
+        roughness: 0.8
+      })
+
+    );
 
   pole.position.set(
     x,
@@ -532,8 +596,8 @@ function makeTorch(x, z) {
 
   const flameLight =
     new THREE.PointLight(
-      0xff9d20,
-      1.4,
+      0xff7a18,
+      1.2,
       260
     );
 
@@ -543,20 +607,25 @@ function makeTorch(x, z) {
     z
   );
 
-  scene.add(flameLight);
-
-
-  const flameMesh = new THREE.Mesh(
-    new THREE.ConeGeometry(
-      6,
-      18,
-      8
-    ),
-
-    new THREE.MeshBasicMaterial({
-      color: 0xffaa33
-    })
+  scene.add(
+    flameLight
   );
+
+
+  const flameMesh =
+    new THREE.Mesh(
+
+      new THREE.ConeGeometry(
+        6,
+        18,
+        8
+      ),
+
+      new THREE.MeshBasicMaterial({
+        color: 0xffaa33
+      })
+
+    );
 
   flameMesh.position.set(
     x,
@@ -564,13 +633,15 @@ function makeTorch(x, z) {
     z
   );
 
-  scene.add(flameMesh);
+  scene.add(
+    flameMesh
+  );
 
 
   return {
     flameLight,
     flameMesh,
-    baseIntensity: 1.4
+    baseIntensity: 1.2
   };
 }
 
@@ -600,8 +671,13 @@ const floorGeo =
 
 const floorMat =
   new THREE.MeshStandardMaterial({
-    color: 0xe8e8e8,
-    roughness: 0.95
+
+    color: 0x111111,
+
+    roughness: 0.92,
+
+    metalness: 0.05
+
   });
 
 
@@ -611,13 +687,15 @@ const floor =
     floorMat
   );
 
-
 floor.rotation.x =
   -Math.PI / 2;
 
-floor.position.y = 0;
+floor.position.y =
+  0;
 
-scene.add(floor);
+scene.add(
+  floor
+);
 
 
 /* =========================================================
@@ -628,17 +706,20 @@ const grid =
   new THREE.GridHelper(
     1400,
     40,
-    0xd22a2a,
-    0xcccccc
+    0x551111,
+    0x181818
   );
 
-grid.position.y = 0.5;
+grid.position.y =
+  0.5;
 
-scene.add(grid);
+scene.add(
+  grid
+);
 
 
 /* =========================================================
-   DISTANT ARENA WALL
+   BACK WALL
 ========================================================= */
 
 const wallGeo =
@@ -654,9 +735,13 @@ const wallGeo =
 
 const wallMat =
   new THREE.MeshStandardMaterial({
-    color: 0xf5f5f5,
+
+    color: 0x050505,
+
     side: THREE.BackSide,
+
     roughness: 1
+
   });
 
 
@@ -666,9 +751,12 @@ const wall =
     wallMat
   );
 
-wall.position.y = 120;
+wall.position.y =
+  120;
 
-scene.add(wall);
+scene.add(
+  wall
+);
 
 
 /* =========================================================
@@ -681,33 +769,68 @@ function buildFighter(color) {
     new THREE.Group();
 
 
-  const mat =
+  /*
+    CHARACTER MATERIAL
+
+    High emissive value makes the
+    character visible against black.
+  */
+
+  const bodyMat =
     new THREE.MeshStandardMaterial({
 
-      color,
+      color: color,
 
-      roughness: 0.45,
+      roughness: 0.38,
 
-      metalness: 0.2,
+      metalness: 0.18,
 
       emissive: color,
 
-      emissiveIntensity: 0.12
+      emissiveIntensity: 0.22
 
     });
 
 
-  const darkMat =
+  /* Dark pants */
+
+  const pantsMat =
     new THREE.MeshStandardMaterial({
 
-      color: 0x252525,
+      color: 0x222222,
 
-      roughness: 0.8
+      roughness: 0.72,
+
+      metalness: 0.1,
+
+      emissive: 0x050505,
+
+      emissiveIntensity: 0.1
 
     });
 
 
-  /* torso */
+  /* Skin */
+
+  const skinMat =
+    new THREE.MeshStandardMaterial({
+
+      color: 0xd8a57b,
+
+      roughness: 0.68,
+
+      metalness: 0.02,
+
+      emissive: 0x24150d,
+
+      emissiveIntensity: 0.08
+
+    });
+
+
+  /* =====================================================
+     TORSO
+  ===================================================== */
 
   const torso =
     new THREE.Mesh(
@@ -718,65 +841,102 @@ function buildFighter(color) {
         20
       ),
 
-      mat
+      bodyMat
 
     );
 
-  torso.position.y = 78;
+  torso.position.y =
+    78;
 
-  group.add(torso);
+  group.add(
+    torso
+  );
 
 
-  /* head */
+  /* =====================================================
+     HEAD
+  ===================================================== */
 
   const head =
     new THREE.Mesh(
 
       new THREE.SphereGeometry(
         12,
-        16,
-        16
+        20,
+        20
       ),
 
-      new THREE.MeshStandardMaterial({
-
-        color: 0xd8b48a,
-
-        roughness: 0.7
-
-      })
+      skinMat
 
     );
 
-  head.position.y = 112;
+  head.position.y =
+    112;
 
-  group.add(head);
+  group.add(
+    head
+  );
 
 
-  /* hips */
+  /* =====================================================
+     NECK
+  ===================================================== */
+
+  const neck =
+    new THREE.Mesh(
+
+      new THREE.CylinderGeometry(
+        5,
+        5,
+        9,
+        12
+      ),
+
+      skinMat
+
+    );
+
+  neck.position.y =
+    99;
+
+  group.add(
+    neck
+  );
+
+
+  /* =====================================================
+     WAIST / HIPS
+  ===================================================== */
 
   const hips =
     new THREE.Mesh(
 
       new THREE.BoxGeometry(
-        26,
+        28,
         16,
-        18
+        20
       ),
 
-      darkMat
+      pantsMat
 
     );
 
-  hips.position.y = 50;
+  hips.position.y =
+    50;
 
-  group.add(hips);
+  group.add(
+    hips
+  );
 
+
+  /* =====================================================
+     LIMB CREATOR
+  ===================================================== */
 
   function makeLimb(
     len,
     radius,
-    matUsed
+    material
   ) {
 
     const pivot =
@@ -788,12 +948,12 @@ function buildFighter(color) {
 
         new THREE.CylinderGeometry(
           radius,
-          radius * 0.85,
+          radius * 0.88,
           len,
-          8
+          12
         ),
 
-        matUsed
+        material
 
       );
 
@@ -802,57 +962,71 @@ function buildFighter(color) {
       -len / 2;
 
 
-    pivot.add(mesh);
+    pivot.add(
+      mesh
+    );
+
 
     return pivot;
   }
 
 
-  /* right arm */
+  /* =====================================================
+     RIGHT ARM
+  ===================================================== */
 
   const armR =
     makeLimb(
       38,
       6,
-      mat
+      bodyMat
     );
 
   armR.position.set(
-    16,
+    17,
     96,
     4
   );
 
-  group.add(armR);
+  group.add(
+    armR
+  );
 
 
-  /* left arm */
+  /* =====================================================
+     LEFT ARM
+  ===================================================== */
 
   const armL =
     makeLimb(
       38,
       6,
-      mat
+      bodyMat
     );
 
   armL.position.set(
-    -16,
+    -17,
     96,
     -4
   );
 
-  armL.rotation.x = 0.15;
+  armL.rotation.x =
+    0.15;
 
-  group.add(armL);
+  group.add(
+    armL
+  );
 
 
-  /* right leg */
+  /* =====================================================
+     RIGHT LEG
+  ===================================================== */
 
   const legR =
     makeLimb(
       46,
       7.5,
-      darkMat
+      pantsMat
     );
 
   legR.position.set(
@@ -861,16 +1035,20 @@ function buildFighter(color) {
     4
   );
 
-  group.add(legR);
+  group.add(
+    legR
+  );
 
 
-  /* left leg */
+  /* =====================================================
+     LEFT LEG
+  ===================================================== */
 
   const legL =
     makeLimb(
       46,
       7.5,
-      darkMat
+      pantsMat
     );
 
   legL.position.set(
@@ -879,7 +1057,61 @@ function buildFighter(color) {
     -4
   );
 
-  group.add(legL);
+  group.add(
+    legL
+  );
+
+
+  /* =====================================================
+     SHOULDER GLOW SPHERES
+  ===================================================== */
+
+  const shoulderR =
+    new THREE.Mesh(
+
+      new THREE.SphereGeometry(
+        7,
+        12,
+        12
+      ),
+
+      bodyMat
+
+    );
+
+  shoulderR.position.set(
+    17,
+    95,
+    4
+  );
+
+  group.add(
+    shoulderR
+  );
+
+
+  const shoulderL =
+    new THREE.Mesh(
+
+      new THREE.SphereGeometry(
+        7,
+        12,
+        12
+      ),
+
+      bodyMat
+
+    );
+
+  shoulderL.position.set(
+    -17,
+    95,
+    -4
+  );
+
+  group.add(
+    shoulderL
+  );
 
 
   return {
@@ -897,6 +1129,10 @@ function buildFighter(color) {
     legR,
 
     legL,
+
+    shoulderR,
+
+    shoulderL,
 
     baseColor: color
 
@@ -980,7 +1216,7 @@ const p1 =
 
     1,
 
-    0xff1616,
+    0xff2020,
 
     {
       left: 'KeyA',
@@ -1023,23 +1259,17 @@ const p2 =
 
 const keys = {};
 
-
 window.addEventListener(
   'keydown',
   e => {
-
     keys[e.code] = true;
-
   }
 );
-
 
 window.addEventListener(
   'keyup',
   e => {
-
     keys[e.code] = false;
-
   }
 );
 
@@ -1054,11 +1284,9 @@ const bloodGeo =
     0
   );
 
-
 let particles = [];
 
 let decals = [];
-
 
 const decalGeo =
   new THREE.CircleGeometry(
@@ -1126,7 +1354,9 @@ function spawnBlood(
     );
 
 
-    scene.add(mesh);
+    scene.add(
+      mesh
+    );
 
 
     particles.push({
@@ -1135,11 +1365,13 @@ function spawnBlood(
 
       vx:
         dirX *
-        (2 + Math.random() * 5) +
+        (2 +
+          Math.random() * 5) +
         (Math.random() - 0.5) * 2,
 
       vy:
-        Math.random() * 7 + 3,
+        Math.random() * 7 +
+        3,
 
       vz:
         (Math.random() - 0.5) * 4,
@@ -1163,11 +1395,11 @@ function addDecal(
   const mat =
     new THREE.MeshBasicMaterial({
 
-      color: 0x9b1020,
+      color: 0x5a0a12,
 
       transparent: true,
 
-      opacity: 0.45,
+      opacity: 0.75,
 
       depthWrite: false
 
@@ -1204,9 +1436,14 @@ function addDecal(
   );
 
 
-  scene.add(mesh);
+  scene.add(
+    mesh
+  );
 
-  decals.push(mesh);
+
+  decals.push(
+    mesh
+  );
 
 
   if (
@@ -1216,7 +1453,9 @@ function addDecal(
     const old =
       decals.shift();
 
-    scene.remove(old);
+    scene.remove(
+      old
+    );
 
   }
 
@@ -1386,7 +1625,8 @@ function handleInput(
       keys[f.ctrl.left]
     ) {
 
-      f.vx = -SPEED;
+      f.vx =
+        -SPEED;
 
     }
 
@@ -1395,7 +1635,8 @@ function handleInput(
       keys[f.ctrl.right]
     ) {
 
-      f.vx = SPEED;
+      f.vx =
+        SPEED;
 
     }
 
@@ -1407,9 +1648,11 @@ function handleInput(
     f.onGround
   ) {
 
-    f.vy = JUMP_V;
+    f.vy =
+      JUMP_V;
 
-    f.onGround = false;
+    f.onGround =
+      false;
 
   }
 
@@ -1482,16 +1725,19 @@ function handleInput(
 
 function updateFighter(f) {
 
-  f.x += f.vx;
+  f.x +=
+    f.vx;
 
-  f.y += f.vy;
+  f.y +=
+    f.vy;
 
 
   if (
     !f.onGround
   ) {
 
-    f.vy -= GRAVITY;
+    f.vy -=
+      GRAVITY;
 
   }
 
@@ -1504,7 +1750,8 @@ function updateFighter(f) {
 
     f.vy = 0;
 
-    f.onGround = true;
+    f.onGround =
+      true;
 
   }
 
@@ -1583,7 +1830,8 @@ function tryHit(
       : 58;
 
 
-  const attackerW = 30;
+  const attackerW =
+    30;
 
 
   const hitboxX =
@@ -1598,12 +1846,15 @@ function tryHit(
 
 
   const hitboxY =
-    attacker.y + 40;
+    attacker.y +
+    40;
 
 
-  const defenderW = 30;
+  const defenderW =
+    30;
 
-  const defenderH = 90;
+  const defenderH =
+    90;
 
 
   if (
@@ -1647,15 +1898,18 @@ function tryHit(
       defender.vx +=
         attacker.facing * 2;
 
-      shakeTime = 4;
+      shakeTime =
+        4;
 
     }
 
     else {
 
-      defender.hp -= dmg;
+      defender.hp -=
+        dmg;
 
-      defender.hitStun = 10;
+      defender.hitStun =
+        10;
 
       defender.vx =
         attacker.facing * 5;
@@ -1674,7 +1928,8 @@ function tryHit(
       );
 
 
-      shakeTime = 10;
+      shakeTime =
+        10;
 
     }
 
@@ -1738,13 +1993,25 @@ function animateFighter(f) {
     112 + bob;
 
 
-  let armRRot = 0.1;
+  m.shoulderR.position.y =
+    95 + bob;
 
-  let armLRot = -0.1;
 
-  let legRRot = 0;
+  m.shoulderL.position.y =
+    95 + bob;
 
-  let legLRot = 0;
+
+  let armRRot =
+    0.1;
+
+  let armLRot =
+    -0.1;
+
+  let legRRot =
+    0;
+
+  let legLRot =
+    0;
 
 
   if (
@@ -1793,9 +2060,11 @@ function animateFighter(f) {
     f.blocking
   ) {
 
-    armRRot = -1.2;
+    armRRot =
+      -1.2;
 
-    armLRot = 1.2;
+    armLRot =
+      1.2;
 
   }
 
@@ -1803,13 +2072,17 @@ function animateFighter(f) {
     !f.onGround
   ) {
 
-    legRRot = -0.4;
+    legRRot =
+      -0.4;
 
-    legLRot = 0.5;
+    legLRot =
+      0.5;
 
-    armRRot = -0.3;
+    armRRot =
+      -0.3;
 
-    armLRot = 0.3;
+    armLRot =
+      0.3;
 
   }
 
@@ -1868,10 +2141,12 @@ function animateFighter(f) {
     ) * 0.35;
 
 
+  /* Hit flash */
+
   const flash =
     f.hitStun > 0
-      ? 0.6
-      : 0.12;
+      ? 0.65
+      : 0.22;
 
 
   m.torso.material.emissiveIntensity +=
@@ -1950,10 +2225,8 @@ function showBanner(text) {
       'banner'
     );
 
-
   b.textContent =
     text;
-
 
   b.style.display =
     'block';
@@ -1977,9 +2250,12 @@ function hideBanner() {
 
 function endMatch(text) {
 
-  matchOver = true;
+  matchOver =
+    true;
 
-  showBanner(text);
+  showBanner(
+    text
+  );
 
   document.getElementById(
     'restartBtn'
@@ -2028,7 +2304,6 @@ document
           )
       );
 
-
       particles = [];
 
 
@@ -2037,17 +2312,20 @@ document
           scene.remove(d)
       );
 
-
       decals = [];
 
 
-      timeLeft = 60;
+      timeLeft =
+        60;
 
-      matchOver = false;
+      matchOver =
+        false;
 
-      inIntro = true;
+      inIntro =
+        true;
 
-      introTimer = 3.5;
+      introTimer =
+        3.5;
 
 
       document.getElementById(
@@ -2071,15 +2349,17 @@ function loop(now) {
 
   const dt =
     Math.min(
-      (now - lastTick) / 1000,
+      (now - lastTick) /
+        1000,
       0.05
     );
 
 
-  lastTick = now;
+  lastTick =
+    now;
 
 
-  /* torch animation */
+  /* Torch flicker */
 
   torches.forEach(
     tr => {
@@ -2097,18 +2377,24 @@ function loop(now) {
   );
 
 
-  /* intro */
+  /* =====================================================
+     INTRO
+  ===================================================== */
 
-  if (inIntro) {
+  if (
+    inIntro
+  ) {
 
-    introTimer -= dt;
+    introTimer -=
+      dt;
 
 
     if (
       introTimer <= 0
     ) {
 
-      inIntro = false;
+      inIntro =
+        false;
 
       hideBanner();
 
@@ -2137,13 +2423,16 @@ function loop(now) {
   }
 
 
-  /* gameplay */
+  /* =====================================================
+     GAMEPLAY
+  ===================================================== */
 
   else if (
     !matchOver
   ) {
 
-    timeLeft -= dt;
+    timeLeft -=
+      dt;
 
 
     handleInput(
@@ -2258,12 +2547,16 @@ function loop(now) {
   }
 
 
-  /* particles */
+  /* =====================================================
+     PARTICLES
+  ===================================================== */
 
   updateParticles();
 
 
-  /* fighter animation */
+  /* =====================================================
+     ANIMATE FIGHTERS
+  ===================================================== */
 
   animateFighter(
     p1
@@ -2274,10 +2567,15 @@ function loop(now) {
   );
 
 
-  /* camera */
+  /* =====================================================
+     CAMERA
+  ===================================================== */
 
   const midX =
-    (p1.x + p2.x) / 2;
+    (
+      p1.x +
+      p2.x
+    ) / 2;
 
 
   const sway =
@@ -2316,7 +2614,8 @@ function loop(now) {
       ) * shakeTime;
 
 
-    shakeTime -= 1;
+    shakeTime -=
+      1;
 
   }
 
@@ -2334,6 +2633,10 @@ function loop(now) {
     0
   );
 
+
+  /* =====================================================
+     HUD + RENDER
+  ===================================================== */
 
   updateHUD();
 
